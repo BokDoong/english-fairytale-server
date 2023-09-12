@@ -1,11 +1,11 @@
 package hanium.englishfairytale.tale.entity;
 
-import hanium.englishfairytale.tale.entity.convertor.StringListConverter;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +29,7 @@ public class Tale {
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDateTime created_at;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(name = "TALE_KEYWORD")
-    private List<String> keyword;
+
+    @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaleKeywords> taleKeywords = new ArrayList<>();
 }

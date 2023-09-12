@@ -13,7 +13,7 @@ public interface TaleService {
                 .title(taleDTO.getTitle())
                 .content(taleDTO.getContent())
                 .kor(taleDTO.getKor())
-                .keyword(taleDTO.getKeyword())
+                //.keyword(taleDTO.getKeyword())
                 .build();
     }
 
@@ -23,7 +23,7 @@ public interface TaleService {
                 .title(tale.getTitle())
                 .content(tale.getContent())
                 .kor(tale.getKor())
-                .keyword(tale.getKeyword())
+                //.keyword(tale.getKeyword())
                 .build();
     }
 }
