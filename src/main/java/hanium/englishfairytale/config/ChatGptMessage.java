@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.config;
+package hanium.englishfairytale.config;
 
 import lombok.Builder;
 import lombok.Data;

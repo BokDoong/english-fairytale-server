@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.service;
+package hanium.englishfairytale.tale.application;
 
 import java.util.List;
 

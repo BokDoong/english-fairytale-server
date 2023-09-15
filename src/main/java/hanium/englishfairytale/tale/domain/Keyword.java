@@ -1,17 +1,13 @@
-package hanium.englishfairytale.tale.entity;
+package hanium.englishfairytale.tale.domain;
 
 import com.sun.istack.NotNull;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Keyword {
@@ -25,5 +21,10 @@ public class Keyword {
     private String word;
 
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TaleKeywords> taleKeywords = new ArrayList<>();
+    private List<TaleKeyword> taleKeywords = new ArrayList<>();
+
+    @Builder
+    public Keyword(String word) {
+        this.word = word;
+    }
 }

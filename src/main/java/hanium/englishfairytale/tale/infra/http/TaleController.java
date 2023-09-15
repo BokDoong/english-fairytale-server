@@ -1,8 +1,8 @@
-package hanium.englishfairytale.tale.controller;
+package hanium.englishfairytale.tale.infra.http;
 
-import hanium.englishfairytale.tale.dto.TaleDTO;
-import hanium.englishfairytale.tale.dto.TaleRequestDTO;
-import hanium.englishfairytale.tale.service.TaleService;
+import hanium.englishfairytale.tale.infra.http.dto.request.TaleCreateDto;
+import hanium.englishfairytale.tale.infra.http.dto.response.TaleCreateResponse;
+import hanium.englishfairytale.tale.application.TaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/fairy-tale")
+@RequestMapping("/api/v1/fairytale")
 @Log4j2
 @RequiredArgsConstructor
 public class TaleController {
     private final TaleService taleService;
 
-    @PostMapping("")
-    public ResponseEntity<TaleDTO> register(@RequestBody TaleRequestDTO taleRequestDTO){
-        log.info(taleRequestDTO);
-        return new ResponseEntity<>(taleService.insert(taleRequestDTO), HttpStatus.OK);
+    @PostMapping("/create")
+    public ResponseEntity<TaleCreateResponse> create(@RequestBody TaleCreateDto taleCreateDto){
+        log.info(taleCreateDto);
+        return new ResponseEntity<>(taleService.create(taleCreateDto), HttpStatus.OK);
     }
 }
