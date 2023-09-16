@@ -1,6 +1,10 @@
-package hanium.englishfairytale.tale.service;
+package hanium.englishfairytale.tale.application.impl;
 
-import hanium.englishfairytale.tale.config.ChatGptMessage;
+import hanium.englishfairytale.config.ChatGptMessage;
+//import hanium.englishfairytale.exception.CustomException;
+import hanium.englishfairytale.exception.CustomException;
+import hanium.englishfairytale.exception.ErrorCode;
+import hanium.englishfairytale.tale.application.ChatGptService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +19,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class ChatGptServiceImpl implements ChatGptService{
+public class ChatGptServiceImpl implements ChatGptService {
     @Value("${gpt.key}")
     String key;
 
@@ -26,6 +30,9 @@ public class ChatGptServiceImpl implements ChatGptService{
      * @return 영어 동화 내용, 한글 동화 내용, 영어 제목
      */
     public List<String> post(String model, List<String> keyword) {
+        // Null 검사
+        verifyKeywordIncluded(keyword);
+
         String question = makeQuestion(keyword);
         // 질의응답 작성
         List<ChatGptMessage> messages = new ArrayList<>();
@@ -145,5 +152,11 @@ public class ChatGptServiceImpl implements ChatGptService{
         JSONObject itemJson = choices.getJSONObject(0);
         JSONObject msg = itemJson.getJSONObject("message");
         return msg.getString("content");
+    }
+
+    private static void verifyKeywordIncluded(List<String> keywords) {
+        if (keywords.isEmpty()) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
     }
 }
