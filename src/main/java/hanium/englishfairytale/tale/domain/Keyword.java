@@ -20,11 +20,15 @@ public class Keyword {
     @NotNull
     private String word;
 
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "keyword")
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
 
     @Builder
     public Keyword(String word) {
         this.word = word;
+    }
+
+    public void addTaleKeyword(TaleKeyword newTaleKeyword) {
+        this.taleKeywords.add(newTaleKeyword);
     }
 }

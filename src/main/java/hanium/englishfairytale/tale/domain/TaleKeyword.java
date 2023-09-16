@@ -1,10 +1,13 @@
 package hanium.englishfairytale.tale.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class TaleKeyword {
 
@@ -13,10 +16,10 @@ public class TaleKeyword {
     @Column(name="id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="tale_id")
     private Tale tale;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="keyword_id")
     private Keyword keyword;
 
@@ -29,10 +32,12 @@ public class TaleKeyword {
     }
 
     private void setTale(Tale newTale) {
-        tale = newTale;
+        this.tale = newTale;
+        newTale.addTaleKeyword(this);
     }
     private void setKeyword(Keyword newKeyword) {
         keyword = newKeyword;
+        newKeyword.addTaleKeyword(this);
     }
 
 }

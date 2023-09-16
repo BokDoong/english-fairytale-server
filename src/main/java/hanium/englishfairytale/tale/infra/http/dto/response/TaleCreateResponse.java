@@ -5,6 +5,7 @@ import hanium.englishfairytale.tale.domain.Tale;
 import lombok.*;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,11 +17,13 @@ public class TaleCreateResponse {
     private String kor;
     private List<String> keywords;
 
-    public TaleCreateResponse(Tale tale, List<Keyword> keywords) {
+    public TaleCreateResponse(Tale tale, List<Keyword> newKeywords) {
         this.title = tale.getTitle();
         this.content = tale.getContent();
         this.kor = tale.getContent();
-        for(Keyword keyword:keywords) {
+
+        keywords = new ArrayList<>();
+        for(Keyword keyword:newKeywords) {
             this.keywords.add(keyword.getWord());
         }
     }

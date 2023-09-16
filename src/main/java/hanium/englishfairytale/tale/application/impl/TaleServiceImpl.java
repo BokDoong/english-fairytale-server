@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class TaleServiceImpl implements TaleService {
 
     private final ChatGptService chatGptService;
@@ -27,20 +26,22 @@ public class TaleServiceImpl implements TaleService {
     @Override
     @Transactional
     public TaleCreateResponse create(TaleCreateDto taleCreateDto) {
-        String model = taleCreateDto.getModel(); // 버전: "gpt-3.5-turbo"
-        List<String> keywords = taleCreateDto.getKeywords(); // 키워드: ["key", "word"]
 
         // 동화 제작
-        List<String> content = chatGptService.post(model, keywords);
+        List<String> content = createGptEnglishTale(taleCreateDto);
 
         // Tale, Keyword
         Tale newTale = createTale(content);
-        List<Keyword> newKeywords = createKeyword(keywords);
+        List<Keyword> newKeywords = createKeyword(taleCreateDto.getKeywords());
 
         // 동화 생성
         createAndSaveTaleKeyword(newTale, newKeywords);
 
         return new TaleCreateResponse(newTale, newKeywords);
+    }
+
+    private List<String> createGptEnglishTale(TaleCreateDto taleCreateDto) {
+        return chatGptService.post(taleCreateDto.getModel(), taleCreateDto.getKeywords());
     }
 
     private void createAndSaveTaleKeyword(Tale newTale, List<Keyword> newKeywords) {

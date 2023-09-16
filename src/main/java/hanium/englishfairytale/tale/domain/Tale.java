@@ -24,7 +24,7 @@ public class Tale {
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tale")
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
 
     @Builder
@@ -34,6 +34,10 @@ public class Tale {
         this.content = content;
         this.kor = kor;
         this.createdTime = LocalDateTime.now();
+    }
+
+    public void addTaleKeyword(TaleKeyword newTaleKeyword) {
+        this.taleKeywords.add(newTaleKeyword);
     }
 
 }

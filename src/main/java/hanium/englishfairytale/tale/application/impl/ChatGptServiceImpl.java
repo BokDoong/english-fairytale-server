@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.application.impl;
 
 import hanium.englishfairytale.config.ChatGptMessage;
+//import hanium.englishfairytale.exception.CustomException;
 import hanium.englishfairytale.exception.CustomException;
 import hanium.englishfairytale.exception.ErrorCode;
 import hanium.englishfairytale.tale.application.ChatGptService;

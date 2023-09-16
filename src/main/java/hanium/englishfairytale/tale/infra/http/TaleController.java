@@ -14,14 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/fairytale")
-@Log4j2
 @RequiredArgsConstructor
 public class TaleController {
     private final TaleService taleService;
 
     @PostMapping("/create")
     public ResponseEntity<TaleCreateResponse> create(@RequestBody TaleCreateDto taleCreateDto){
-        log.info(taleCreateDto);
         return new ResponseEntity<>(taleService.create(taleCreateDto), HttpStatus.OK);
     }
 }
