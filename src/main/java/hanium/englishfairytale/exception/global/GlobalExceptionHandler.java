@@ -1,5 +1,7 @@
-package hanium.englishfairytale.exception;
+package hanium.englishfairytale.exception.global;
 
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.ErrorResponse;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
@@ -15,22 +17,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.servlet.http.HttpServletRequest;
 import java.net.BindException;
-import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-//    @ExceptionHandler
-//    protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e,
-//                                                                    HttpServletRequest request) {
-//        return createErrorResponse(e, request, e.getErrorCode());
-//    }
 
-    // javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
+    // 비즈니스 예외 처리시 발생
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    }
+
+    // javax.validation.Valid or @Validated 으로 binding error 발생시 발생
     // HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> methodArgumentValidation(MethodArgumentNotValidException e) {
@@ -72,22 +71,25 @@ public class GlobalExceptionHandler {
 //        return createErrorResponse(e, request, e.getErrorCode());
 //    }
 
-//    @ExceptionHandler
-//    protected ResponseEntity<ErrorResponse> responseStatus(ResponseStatusException e,
-//                                                           HttpServletRequest request) {
-//        return createErrorResponse(e, request, ErrorCode.INVALID_REQUEST_PARAMETER);
-//    }
-
+    // 데이터 잘못 넘어갔을 경우 발생
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> illegalArgumentException(IllegalArgumentException e) {
         log.error("handleIllegalArgumentException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.INVALID_REQUEST_PARAMETER);
     }
 
+    // 데이터 무결성 위반한 경우 발생
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> dataIntegrityViolationException(DataIntegrityViolationException e) {
         log.error("handleDataIntegrityViolationException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.DATA_INTEGRITY_VIOLATE);
+    }
+
+    // 나머지 에러 여기서 핸들링
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("handleEntityNotFoundException", e);
+        return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE);
     }
 
 }

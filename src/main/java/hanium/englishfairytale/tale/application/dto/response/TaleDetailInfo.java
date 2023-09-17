@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaleCreateResult {
+public class TaleDetailInfo {
     private String title;
     private String content;
     private String kor;
     private List<String> keywords;
 
-    public TaleCreateResult(Tale tale, List<Keyword> newKeywords) {
+    public TaleDetailInfo(Tale tale, List<Keyword> newKeywords) {
         this.title = tale.getTitle();
         this.content = tale.getContent();
         this.kor = tale.getContent();

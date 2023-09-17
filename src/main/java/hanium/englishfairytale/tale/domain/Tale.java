@@ -36,6 +36,14 @@ public class Tale {
         this.createdTime = LocalDateTime.now();
     }
 
+    public Tale createTale(List<String> content) {
+        return Tale.builder()
+                .content(content.get(0))
+                .kor(content.get(1))
+                .title(content.get(2))
+                .build();
+    }
+
     public void addTaleKeyword(TaleKeyword newTaleKeyword) {
         this.taleKeywords.add(newTaleKeyword);
     }

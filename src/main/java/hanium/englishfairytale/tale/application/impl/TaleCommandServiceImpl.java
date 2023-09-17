@@ -2,11 +2,11 @@ package hanium.englishfairytale.tale.application.impl;
 
 import hanium.englishfairytale.tale.application.ChatGptService;
 import hanium.englishfairytale.tale.application.TaleCommandService;
+import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
-import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
-import hanium.englishfairytale.tale.application.dto.response.TaleCreateResult;
+import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,23 +25,28 @@ public class TaleCommandServiceImpl implements TaleCommandService {
 
     @Override
     @Transactional
-    public TaleCreateResult create(TaleCreateDto taleCreateDto) {
+    public TaleDetailInfo create(TaleCreateCommand taleCreateCommand) {
 
         // 동화 제작
-        List<String> content = createGptEnglishTale(taleCreateDto);
+        List<String> content = createGptEnglishTale(taleCreateCommand);
 
         // Tale, Keyword
         Tale newTale = createTale(content);
-        List<Keyword> newKeywords = createKeyword(taleCreateDto.getKeywords());
+        List<Keyword> newKeywords = createKeywords(taleCreateCommand.getKeywords());
 
         // 동화 생성
         createAndSaveTaleKeyword(newTale, newKeywords);
 
-        return new TaleCreateResult(newTale, newKeywords);
+        return new TaleDetailInfo(newTale, newKeywords);
     }
 
-    private List<String> createGptEnglishTale(TaleCreateDto taleCreateDto) {
-        return chatGptService.post(taleCreateDto.getModel(), taleCreateDto.getKeywords());
+    private static Tale createTale(List<String> content) {
+        return Tale.builder()
+                .build().createTale(content);
+    }
+
+    private List<String> createGptEnglishTale(TaleCreateCommand taleCreateCommand) {
+        return chatGptService.post(taleCreateCommand.getModel(), taleCreateCommand.getKeywords());
     }
 
     private void createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords) {
@@ -50,8 +55,11 @@ public class TaleCommandServiceImpl implements TaleCommandService {
         }
     }
 
-    private List<Keyword> createKeyword(List<String> words) {
+    private List<Keyword> createKeywords(List<String> words) {
+        return findAndCreateKeywords(words);
+    }
 
+    private List<Keyword> findAndCreateKeywords(List<String> words) {
         List<Keyword> keywords = new ArrayList<>();
 
         words.forEach(word -> {
@@ -66,11 +74,5 @@ public class TaleCommandServiceImpl implements TaleCommandService {
         return keywords;
     }
 
-    private Tale createTale(List<String> content) {
-        return Tale.builder()
-                .content(content.get(0))
-                .kor(content.get(1))
-                .title(content.get(2))
-                .build();
-    }
+
 }
