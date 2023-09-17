@@ -2,8 +2,8 @@ package hanium.englishfairytale.tale.application.impl;
 
 import hanium.englishfairytale.config.ChatGptMessage;
 //import hanium.englishfairytale.exception.CustomException;
-import hanium.englishfairytale.exception.CustomException;
-import hanium.englishfairytale.exception.ErrorCode;
+//import hanium.englishfairytale.exception.CustomException;
+//import hanium.englishfairytale.exception.ErrorCode;
 import hanium.englishfairytale.tale.application.ChatGptService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -31,7 +31,7 @@ public class ChatGptServiceImpl implements ChatGptService {
      */
     public List<String> post(String model, List<String> keyword) {
         // Null 검사
-        verifyKeywordIncluded(keyword);
+//        verifyKeywordIncluded(keyword);
 
         String question = makeQuestion(keyword);
         // 질의응답 작성
@@ -154,9 +154,9 @@ public class ChatGptServiceImpl implements ChatGptService {
         return msg.getString("content");
     }
 
-    private static void verifyKeywordIncluded(List<String> keywords) {
-        if (keywords.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
-    }
+//    private static void verifyKeywordIncluded(List<String> keywords) {
+//        if (keywords.isEmpty()) {
+//            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+//        }
+//    }
 }
