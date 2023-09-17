@@ -1,9 +1,9 @@
 package hanium.englishfairytale.tale.application;
 
-import hanium.englishfairytale.tale.infra.http.dto.request.TaleCreateDto;
-import hanium.englishfairytale.tale.infra.http.dto.response.TaleCreateResponse;
+import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
+import hanium.englishfairytale.tale.application.dto.response.TaleCreateResult;
 
 public interface TaleCommandService {
-    TaleCreateResponse create(TaleCreateDto taleCreateDto);
+    TaleCreateResult create(TaleCreateDto taleCreateDto);
 
 }

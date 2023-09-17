@@ -1,23 +1,22 @@
-package hanium.englishfairytale.tale.infra.http.dto.response;
+package hanium.englishfairytale.tale.application.dto.response;
 
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.*;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaleCreateResponse {
+public class TaleCreateResult {
     private String title;
     private String content;
     private String kor;
     private List<String> keywords;
 
-    public TaleCreateResponse(Tale tale, List<Keyword> newKeywords) {
+    public TaleCreateResult(Tale tale, List<Keyword> newKeywords) {
         this.title = tale.getTitle();
         this.content = tale.getContent();
         this.kor = tale.getContent();

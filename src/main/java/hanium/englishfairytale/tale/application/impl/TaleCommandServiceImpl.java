@@ -5,8 +5,8 @@ import hanium.englishfairytale.tale.application.TaleCommandService;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
-import hanium.englishfairytale.tale.infra.http.dto.request.TaleCreateDto;
-import hanium.englishfairytale.tale.infra.http.dto.response.TaleCreateResponse;
+import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
+import hanium.englishfairytale.tale.application.dto.response.TaleCreateResult;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class TaleCommandServiceImpl implements TaleCommandService {
 
     @Override
     @Transactional
-    public TaleCreateResponse create(TaleCreateDto taleCreateDto) {
+    public TaleCreateResult create(TaleCreateDto taleCreateDto) {
 
         // 동화 제작
         List<String> content = createGptEnglishTale(taleCreateDto);
@@ -37,7 +37,7 @@ public class TaleCommandServiceImpl implements TaleCommandService {
         // 동화 생성
         createAndSaveTaleKeyword(newTale, newKeywords);
 
-        return new TaleCreateResponse(newTale, newKeywords);
+        return new TaleCreateResult(newTale, newKeywords);
     }
 
     private List<String> createGptEnglishTale(TaleCreateDto taleCreateDto) {
