@@ -4,8 +4,8 @@ package hanium.englishfairytale.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
-public class CustomException extends RuntimeException {
-    private final ErrorCode errorCode;
-}
+//@AllArgsConstructor
+//@Getter
+//public class CustomException extends RuntimeException {
+//    private final ErrorCode errorCode;
+//}

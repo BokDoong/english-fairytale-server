@@ -1,7 +1,7 @@
 package hanium.englishfairytale.tale.application.impl;
 
 import hanium.englishfairytale.tale.application.ChatGptService;
-import hanium.englishfairytale.tale.application.TaleService;
+import hanium.englishfairytale.tale.application.TaleCommandService;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
@@ -9,16 +9,16 @@ import hanium.englishfairytale.tale.infra.http.dto.request.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.response.TaleCreateResponse;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TaleServiceImpl implements TaleService {
+public class TaleCommandServiceImpl implements TaleCommandService {
 
     private final ChatGptService chatGptService;
     private final TaleRepository taleRepository;
@@ -44,17 +44,26 @@ public class TaleServiceImpl implements TaleService {
         return chatGptService.post(taleCreateDto.getModel(), taleCreateDto.getKeywords());
     }
 
-    private void createAndSaveTaleKeyword(Tale newTale, List<Keyword> newKeywords) {
-        for(Keyword newKeyword: newKeywords) {
-            TaleKeyword newtaleKeyword = TaleKeyword.createTaleKeyword(newTale, newKeyword);
-            taleRepository.save(newtaleKeyword);
+    private void createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords) {
+        for(Keyword keyword: keywords) {
+            taleRepository.save(TaleKeyword.createTaleKeyword(tale, keyword));
         }
     }
 
-    private List<Keyword> createKeyword(List<String> keywords) {
-        return keywords.stream()
-                .map(word -> Keyword.builder().word(word).build())
-                .collect(Collectors.toList());
+    private List<Keyword> createKeyword(List<String> words) {
+
+        List<Keyword> keywords = new ArrayList<>();
+
+        words.forEach(word -> {
+            Optional<Keyword> optionalKeyword = taleRepository.findByWord(word);
+            if (optionalKeyword.isEmpty()) {
+                keywords.add(Keyword.builder().word(word).build());
+            } else {
+                keywords.add(optionalKeyword.get());
+            }
+        });
+
+        return keywords;
     }
 
     private Tale createTale(List<String> content) {
