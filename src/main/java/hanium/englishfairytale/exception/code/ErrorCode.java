@@ -24,8 +24,8 @@ public enum ErrorCode {
 
     // Tale
     TALE_NOT_FOUND(TaleCode.NOT_FOUND.getCode(), NOT_FOUND, "존재하지 않는 동화"),
-    EXCEED_KEYWORD_LIMIT(TaleCode.KEYWORD_COUNT_LIMIT.getCode(), BAD_REQUEST, "입력 키워드 개수 초과")
-
+    EXCEED_KEYWORD_LIMIT(TaleCode.KEYWORD_COUNT_LIMIT.getCode(), BAD_REQUEST, "입력 키워드 개수 초과"),
+    DUPLICATED_KEYWORD(TaleCode.KEYWORD_DUPLICATED.getCode(), BAD_REQUEST, "중복된 키워드가 있는 경우"),
     ;
 
     private final String code;

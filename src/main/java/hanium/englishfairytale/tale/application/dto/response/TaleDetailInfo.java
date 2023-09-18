@@ -11,12 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaleDetailInfo {
+    private Long taleId;
     private String title;
     private String content;
     private String kor;
     private List<String> keywords;
 
     public TaleDetailInfo(Tale tale, List<Keyword> newKeywords) {
+        this.taleId = tale.getId();
         this.title = tale.getTitle();
         this.content = tale.getContent();
         this.kor = tale.getContent();

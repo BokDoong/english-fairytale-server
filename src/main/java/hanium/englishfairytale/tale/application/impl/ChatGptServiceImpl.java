@@ -1,9 +1,6 @@
 package hanium.englishfairytale.tale.application.impl;
 
 import hanium.englishfairytale.config.ChatGptMessage;
-//import hanium.englishfairytale.exception.CustomException;
-//import hanium.englishfairytale.exception.CustomException;
-//import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.tale.application.ChatGptService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -101,24 +98,6 @@ public class ChatGptServiceImpl implements ChatGptService {
         // 영어로된 제목 리턴 값에 추가
         tale_content.add(content_kor);
 
-//        // 영어 제목 답변 저장
-//        messages.add(
-//                ChatGptMessage.builder()
-//                        .role("assistant")
-//                        .content(content_kor)
-//                        .build()
-//        );
-//
-//        // 한글 제목 얻기위한 답변
-//        messages.add(
-//                ChatGptMessage.builder()
-//                        .role("user")
-//                        .content("Please change the above title to Korean.")
-//                        .build()
-//        );
-//
-//        tale_content.add(getGptReponse(bodyMap));
-//        System.out.println("tale_content = " + tale_content);
         return tale_content;
     }
 

@@ -46,7 +46,13 @@ public class TaleCommandServiceImpl implements TaleCommandService {
     }
 
     private List<String> createGptEnglishTale(TaleCreateCommand taleCreateCommand) {
+        verifyKeywords(taleCreateCommand);
         return chatGptService.post(taleCreateCommand.getModel(), taleCreateCommand.getKeywords());
+    }
+
+    private static void verifyKeywords(TaleCreateCommand taleCreateCommand) {
+        Keyword.verifyNumberOfKeywords(taleCreateCommand.getKeywords());
+        Keyword.verifyDuplicatedKeywords(taleCreateCommand.getKeywords());
     }
 
     private void createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords) {

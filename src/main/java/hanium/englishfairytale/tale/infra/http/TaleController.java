@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.infra.http;
 
 import hanium.englishfairytale.tale.application.TaleCommandService;
+import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
 import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
 import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
@@ -23,6 +24,10 @@ public class TaleController {
     @PostMapping("/create")
     public ResponseEntity<TaleDetailInfo> create(@Validated @RequestBody TaleCreateDto taleCreateDto){
 
-        return new ResponseEntity<>(taleService.create(converter.toCommand(taleCreateDto)), HttpStatus.OK);
+        return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto)), HttpStatus.OK);
+    }
+
+    private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto) {
+        return converter.toCommand(taleCreateDto);
     }
 }
