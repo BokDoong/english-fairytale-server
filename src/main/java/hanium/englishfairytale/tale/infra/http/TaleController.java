@@ -1,24 +1,30 @@
 package hanium.englishfairytale.tale.infra.http;
 
-import hanium.englishfairytale.tale.infra.http.dto.request.TaleCreateDto;
-import hanium.englishfairytale.tale.infra.http.dto.response.TaleCreateResponse;
+import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
+import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
 import hanium.englishfairytale.tale.application.TaleCommandService;
+import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
+import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/fairytale")
 @RequiredArgsConstructor
 public class TaleController {
     private final TaleCommandService taleService;
+    private final TaleDtoConverter converter;
 
     @PostMapping("/create")
-    public ResponseEntity<TaleCreateResponse> create(@RequestBody TaleCreateDto taleCreateDto){
-        return new ResponseEntity<>(taleService.create(taleCreateDto), HttpStatus.OK);
+    public ResponseEntity<TaleDetailInfo> create(@Validated @RequestBody TaleCreateDto taleCreateDto){
+
+        return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto)), HttpStatus.OK);
+    }
+
+    private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto) {
+        return converter.toCommand(taleCreateDto);
     }
 }
