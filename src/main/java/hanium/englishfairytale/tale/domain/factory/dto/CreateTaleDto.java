@@ -1,4 +1,4 @@
-package hanium.englishfairytale.config;
+package hanium.englishfairytale.tale.domain.factory.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,12 +8,12 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class ChatGptMessage implements Serializable {
+public class CreateTaleDto implements Serializable {
     private String role;
     private String content;
 
     @Builder
-    public ChatGptMessage(String role, String content) {
+    public CreateTaleDto(String role, String content) {
         this.role = role;
         this.content = content;
     }

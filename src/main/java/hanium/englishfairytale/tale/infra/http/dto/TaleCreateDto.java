@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class TaleCreateDto {
-    @NotBlank(message = "MODEL_IS_MANDATORY")
+    @NotBlank
     private String model;
-    @NotEmpty(message = "KEYWORDS_ARE_MANDATORY")
+    @NotEmpty
     private List<String> keywords;
 
     public TaleCreateDto(String model, List<String> keywords) {

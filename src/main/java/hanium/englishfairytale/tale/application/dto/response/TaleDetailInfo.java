@@ -20,8 +20,8 @@ public class TaleDetailInfo {
     public TaleDetailInfo(Tale tale, List<Keyword> newKeywords) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
-        this.content = tale.getContent();
-        this.kor = tale.getContent();
+        this.content = tale.getEngTale();
+        this.kor = tale.getKorTale();
 
         keywords = new ArrayList<>();
         for(Keyword keyword:newKeywords) {

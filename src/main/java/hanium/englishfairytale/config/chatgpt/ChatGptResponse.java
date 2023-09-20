@@ -1,4 +1,4 @@
-package hanium.englishfairytale.config;
+package hanium.englishfairytale.config.chatgpt;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

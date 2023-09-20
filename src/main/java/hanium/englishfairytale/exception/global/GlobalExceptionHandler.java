@@ -2,12 +2,11 @@ package hanium.englishfairytale.exception.global;
 
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.ErrorResponse;
+import hanium.englishfairytale.exception.RuntimeIOException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+
 import java.net.BindException;
 
 @RestControllerAdvice
@@ -65,11 +65,11 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(ErrorCode.FILE_SIZE);
     }
 
-//    @ExceptionHandler
-//    protected ResponseEntity<ErrorResponse> s3ImageSave(RuntimeIOException e,
-//                                                        HttpServletRequest request) {
-//        return createErrorResponse(e, request, e.getErrorCode());
-//    }
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> s3ImageSave(RuntimeIOException e) {
+        log.error("handleRuntimeIOException", e);
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    }
 
     // 데이터 잘못 넘어갔을 경우 발생
     @ExceptionHandler

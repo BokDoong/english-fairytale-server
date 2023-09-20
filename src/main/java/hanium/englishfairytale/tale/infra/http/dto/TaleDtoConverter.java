@@ -7,10 +7,9 @@ import org.springframework.stereotype.Component;
 public class TaleDtoConverter {
 
     public TaleCreateCommand toCommand(TaleCreateDto dto) {
-        TaleCreateDto taleCreateDto = new TaleCreateDto(dto.getModel(), dto.getKeywords());
         return TaleCreateCommand.builder()
-                .model(taleCreateDto.getModel())
-                .keywords(taleCreateDto.getKeywords())
+                .model(dto.getModel())
+                .keywords(dto.getKeywords())
                 .build();
     }
 }
