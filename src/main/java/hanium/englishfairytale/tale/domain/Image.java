@@ -1,18 +1,12 @@
 package hanium.englishfairytale.tale.domain;
 
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Embeddable
 public class Image {
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="taleImage_id")
     private TaleImage taleImage;
-
-    protected Image() {
-        this.taleImage = new TaleImage();
-    }
 
     void putTaleImage(TaleImage newtaleImage) {
         taleImage = newtaleImage;

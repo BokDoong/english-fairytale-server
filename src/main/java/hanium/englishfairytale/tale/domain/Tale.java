@@ -35,19 +35,12 @@ public class Tale {
         this.title = title;
         this.engTale = engTale;
         this.korTale = korTale;
+        this.image = new Image();
         this.createdTime = LocalDateTime.now();
     }
 
-    void putImage(TaleImage taleImage) {
+    public void putImage(TaleImage taleImage) {
         image.putTaleImage(taleImage);
-    }
-
-    public Tale createTale(CreatedTale createdTale) {
-        return Tale.builder()
-                .title(createdTale.getTitle())
-                .engTale(createdTale.getEngTale())
-                .korTale(createdTale.getKorTale())
-                .build();
     }
 
     public void addTaleKeyword(TaleKeyword newTaleKeyword) {

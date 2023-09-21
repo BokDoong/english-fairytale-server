@@ -10,6 +10,7 @@ import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,46 +22,55 @@ public class TaleCommandService {
 
     private final TaleRepository taleRepository;
     private final TaleManageService taleManageService;
+    private final FileManageService fileManageService;
 
     @Transactional
     public TaleDetailInfo create(TaleCreateCommand taleCreateCommand) {
 
-        // 동화 제작
-        CreatedTale createdTale = createGptEnglishTale(taleCreateCommand);
+        Tale tale = createTale(taleCreateCommand);
+        List<Keyword> keywords = createKeywords(taleCreateCommand);
+        String imageUrl = createAndSaveTaleKeyword(tale, keywords, taleCreateCommand.getImage());
 
-        // Tale, Keyword
-        Tale tale = createTale(createdTale);
-        List<Keyword> newKeywords = createKeywords(taleCreateCommand.getKeywords());
-
-        // 동화 생성
-        createAndSaveTaleKeyword(tale, newKeywords);
-
-        return new TaleDetailInfo(tale, newKeywords);
+        return new TaleDetailInfo(tale, keywords, imageUrl);
     }
 
-    private static Tale createTale(CreatedTale createdTale) {
+    private Tale createTale(TaleCreateCommand taleCreateCommand) {
+
+        CreatedTale createdTale = createEnglishTale(taleCreateCommand);
         return Tale.builder()
-                .build().createTale(createdTale);
+                .title(createdTale.getTitle())
+                .engTale(createdTale.getEngTale())
+                .korTale(createdTale.getKorTale())
+                .build();
     }
 
-    private CreatedTale createGptEnglishTale(TaleCreateCommand taleCreateCommand) {
+    private CreatedTale createEnglishTale(TaleCreateCommand taleCreateCommand) {
         verifyKeywords(taleCreateCommand);
         return taleManageService.post(taleCreateCommand.getModel(), taleCreateCommand.getKeywords());
     }
 
-    private static void verifyKeywords(TaleCreateCommand taleCreateCommand) {
+    private void verifyKeywords(TaleCreateCommand taleCreateCommand) {
         Keyword.verifyNumberOfKeywords(taleCreateCommand.getKeywords());
         Keyword.verifyDuplicatedKeywords(taleCreateCommand.getKeywords());
     }
 
-    private void createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords) {
+    private String createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords, MultipartFile image) {
         for(Keyword keyword: keywords) {
             taleRepository.save(TaleKeyword.createTaleKeyword(tale, keyword));
         }
+        return saveAndGetImageUrl(tale, image);
     }
 
-    private List<Keyword> createKeywords(List<String> words) {
-        return findAndCreateKeywords(words);
+    private String saveAndGetImageUrl(Tale tale, MultipartFile image) {
+        if (image == null) {
+            return null;
+        }
+
+        return fileManageService.uploadImage(tale, image);
+    }
+
+    private List<Keyword> createKeywords(TaleCreateCommand taleCreateCommand) {
+        return findAndCreateKeywords(taleCreateCommand.getKeywords());
     }
 
     private List<Keyword> findAndCreateKeywords(List<String> words) {
