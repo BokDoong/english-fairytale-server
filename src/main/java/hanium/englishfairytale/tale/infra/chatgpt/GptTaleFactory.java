@@ -1,7 +1,7 @@
 package hanium.englishfairytale.tale.infra.chatgpt;
 
 import hanium.englishfairytale.tale.domain.factory.TaleFactory;
-import hanium.englishfairytale.tale.domain.factory.dto.CreateTaleDto;
+import hanium.englishfairytale.tale.domain.factory.dto.CreateTaleFactoryDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ public class GptTaleFactory implements TaleFactory {
     String key;
 
     @Override
-    public String getGptResponse(String model, List<CreateTaleDto> messages) {
+    public String getGptResponse(String model, List<CreateTaleFactoryDto> messages) {
 
         Map<String, Object> bodyMap = new HashMap<>();
         createMessageForm(model, messages, bodyMap);
@@ -53,7 +53,7 @@ public class GptTaleFactory implements TaleFactory {
         return msg.getString("content");
     }
 
-    private void createMessageForm(String model, List<CreateTaleDto> messages, Map<String, Object> bodyMap) {
+    private void createMessageForm(String model, List<CreateTaleFactoryDto> messages, Map<String, Object> bodyMap) {
         bodyMap.put("model", model);
         bodyMap.put("stream", false);
         bodyMap.put("messages", messages);

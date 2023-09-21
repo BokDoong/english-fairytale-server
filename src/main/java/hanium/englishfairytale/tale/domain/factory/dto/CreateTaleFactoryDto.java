@@ -8,12 +8,12 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class CreateTaleDto implements Serializable {
+public class CreateTaleFactoryDto implements Serializable {
     private String role;
     private String content;
 
     @Builder
-    public CreateTaleDto(String role, String content) {
+    public CreateTaleFactoryDto(String role, String content) {
         this.role = role;
         this.content = content;
     }

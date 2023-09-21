@@ -1,14 +1,13 @@
 package hanium.englishfairytale.tale.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class TaleImage {
@@ -23,12 +22,21 @@ public class TaleImage {
     @NotNull
     @Column(name = "stored_name")
     private String storedName;
+    @NotNull
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @Builder
-    protected TaleImage(Tale tale, String originalName, String storedName) {
-        this.originalName = originalName;
-        this.storedName = storedName;
-        tale.putImage(this);
+    public static TaleImage createTaleImage(Tale tale, String originalName, String storedName, String imageUrl) {
+        TaleImage taleImage = setTaleImage(originalName, storedName, imageUrl);
+        tale.putImage(taleImage);
+        return taleImage;
     }
 
+    private static TaleImage setTaleImage(String originalName, String storedName, String imageUrl) {
+        return TaleImage.builder()
+                .originalName(originalName)
+                .storedName(storedName)
+                .imageUrl(imageUrl)
+                .build();
+    }
 }

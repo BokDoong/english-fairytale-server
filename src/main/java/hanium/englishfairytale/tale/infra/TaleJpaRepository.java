@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.infra.persistence;
+package hanium.englishfairytale.tale.infra;
 
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
