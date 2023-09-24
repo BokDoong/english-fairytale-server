@@ -1,10 +1,14 @@
 package hanium.englishfairytale.tale.application;
 
+import hanium.englishfairytale.exception.NotFoundException;
+import hanium.englishfairytale.exception.code.ErrorCode;
+import hanium.englishfairytale.member.domain.Member;
+import hanium.englishfairytale.member.domain.MemberRepository;
 import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
-import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
+import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
 import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import lombok.RequiredArgsConstructor;
@@ -20,28 +24,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TaleCommandService {
 
+    private final MemberRepository memberRepository;
     private final TaleRepository taleRepository;
     private final TaleManageService taleManageService;
     private final FileManageService fileManageService;
 
     @Transactional
-    public TaleDetailInfo create(TaleCreateCommand taleCreateCommand) {
-
+    public TaleCreateResponse create(TaleCreateCommand taleCreateCommand) {
         Tale tale = createTale(taleCreateCommand);
         List<Keyword> keywords = createKeywords(taleCreateCommand);
-        String imageUrl = createAndSaveTaleKeyword(tale, keywords, taleCreateCommand.getImage());
+        String imageUrl = saveTaleKeywordAndGetImageUrl(tale, keywords, taleCreateCommand.getImage());
 
-        return new TaleDetailInfo(tale, keywords, imageUrl);
+        return new TaleCreateResponse(tale, keywords, imageUrl);
     }
 
     private Tale createTale(TaleCreateCommand taleCreateCommand) {
-
+        Member member = findMember(taleCreateCommand.getMemberId());
         CreatedTale createdTale = createEnglishTale(taleCreateCommand);
         return Tale.builder()
                 .title(createdTale.getTitle())
                 .engTale(createdTale.getEngTale())
                 .korTale(createdTale.getKorTale())
+                .member(member)
                 .build();
+    }
+
+    private Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, memberId));
     }
 
     private CreatedTale createEnglishTale(TaleCreateCommand taleCreateCommand) {
@@ -54,7 +64,7 @@ public class TaleCommandService {
         Keyword.verifyDuplicatedKeywords(taleCreateCommand.getKeywords());
     }
 
-    private String createAndSaveTaleKeyword(Tale tale, List<Keyword> keywords, MultipartFile image) {
+    private String saveTaleKeywordAndGetImageUrl(Tale tale, List<Keyword> keywords, MultipartFile image) {
         for(Keyword keyword: keywords) {
             taleRepository.save(TaleKeyword.createTaleKeyword(tale, keyword));
         }

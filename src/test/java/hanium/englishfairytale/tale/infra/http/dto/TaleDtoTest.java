@@ -18,7 +18,7 @@ public class TaleDtoTest {
         }
 
         Assertions.assertThrows(BusinessException.class, () -> {
-            TaleCreateDto testTaleCreateDto = new TaleCreateDto("테스트 모델", testKeywords);
+            TaleCreateDto testTaleCreateDto = new TaleCreateDto(12L,"테스트 모델", testKeywords);
         });
     }
 }

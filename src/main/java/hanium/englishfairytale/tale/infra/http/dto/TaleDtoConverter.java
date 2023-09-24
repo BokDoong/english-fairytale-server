@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class TaleDtoConverter {
-
     public TaleCreateCommand toCommand(TaleCreateDto dto, MultipartFile image) {
         return TaleCreateCommand.builder()
+                .memberId(dto.getMemberId())
                 .model(dto.getModel())
                 .keywords(dto.getKeywords())
                 .image(image)

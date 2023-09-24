@@ -1,7 +1,7 @@
 package hanium.englishfairytale.tale.infra.http;
 
 import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
-import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
+import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
 import hanium.englishfairytale.tale.application.TaleCommandService;
 import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
@@ -21,8 +21,8 @@ public class TaleController {
     private final TaleDtoConverter converter;
 
     @PostMapping("/create")
-    public ResponseEntity<TaleDetailInfo> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
-                                                 @RequestPart(required = false) MultipartFile image){
+    public ResponseEntity<TaleCreateResponse> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
+                                                     @RequestPart(required = false) MultipartFile image){
         return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
     }
 

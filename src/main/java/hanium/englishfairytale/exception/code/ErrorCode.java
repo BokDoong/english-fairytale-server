@@ -27,6 +27,11 @@ public enum ErrorCode {
     EXCEED_KEYWORD_LIMIT(TaleCode.KEYWORD_COUNT_LIMIT.getCode(), BAD_REQUEST, "입력 키워드 개수 초과"),
     DUPLICATED_KEYWORD(TaleCode.KEYWORD_DUPLICATED.getCode(), BAD_REQUEST, "중복된 키워드가 있는 경우"),
     IMAGE_PROCESSING_IO(TaleCode.IMAGE_IO.getCode(), BAD_REQUEST, "이미지 처리 중 문제가 발생한 경우"),
+
+    // Member
+    MEMBER_NOT_FOUND(MemberCode.NOT_FOUND.getCode(), NOT_FOUND, " "),
+    EXISTED_MEMBER(MemberCode.MEMBER_EXISTED.getCode(), CONFLICT, "이미 회원가입 되어있을 경우"),
+    DUPLICATED_NICKNAME(MemberCode.NICKNAME_DUPLICATED.getCode(), CONFLICT, "동일한 닉네임이 존재하는 경우"),
     ;
 
     private final String code;
