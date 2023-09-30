@@ -11,6 +11,7 @@ import hanium.englishfairytale.tale.domain.TaleRepository;
 import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
 import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
+import hanium.englishfairytale.tale.infra.TaleQueryDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class TaleCommandService {
 
     private final MemberRepository memberRepository;
     private final TaleRepository taleRepository;
+    private final TaleQueryDao taleQueryDao;
     private final TaleManageService taleManageService;
     private final FileManageService fileManageService;
 
@@ -36,6 +38,25 @@ public class TaleCommandService {
         String imageUrl = saveTaleKeywordAndGetImageUrl(tale, keywords, taleCreateCommand.getImage());
 
         return new TaleCreateResponse(tale, keywords, imageUrl);
+    }
+
+
+    // TODO: 2023.09.30 동화삭제 API 버그
+    @Transactional
+    public void delete(Long taleId) {
+        Tale tale = verifyExistedTale(taleId);
+        deleteTales(tale);
+    }
+
+    private void deleteTales(Tale tale) {
+        for (TaleKeyword taleKeyword : tale.getTaleKeywords()) {
+            taleRepository.deleteByTaleKeywordId(taleKeyword.getId());
+        }
+    }
+
+    private Tale verifyExistedTale(Long taleId) {
+        return taleQueryDao.findTaleByTaleId(taleId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
     private Tale createTale(TaleCreateCommand taleCreateCommand) {

@@ -28,7 +28,7 @@ public class Tale {
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "tale")
+    @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
@@ -44,6 +44,10 @@ public class Tale {
 
         this.member = member;
         member.addTale(this);
+    }
+
+    public String getMemberName() {
+        return this.member.getName();
     }
 
     public void putImage(TaleImage taleImage) {

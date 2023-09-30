@@ -14,4 +14,7 @@ public class Image {
     void putTaleImage(TaleImage newtaleImage) {
         taleImage = newtaleImage;
     }
+    public String getUrl() {
+        return taleImage.getImageUrl();
+    }
 }

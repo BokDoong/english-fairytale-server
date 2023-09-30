@@ -10,23 +10,15 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class TaleDetailInfo {
+public class TalesInfo {
 
     private Long taleId;
     private String title;
-    private String memberName;
-    private String engTale;
-    private String korTale;
-    private String imageUrl;
     private List<String> keywords;
 
-    public TaleDetailInfo(Tale tale, List<Keyword> keywordList) {
+    public TalesInfo(Tale tale, List<Keyword> keywordList) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
-        this.memberName = tale.getMemberName();
-        this.engTale = tale.getEngTale();
-        this.korTale = tale.getKorTale();
-        this.imageUrl = tale.getImage().getUrl();
         keywords = new ArrayList<>();
         for (Keyword keyword : keywordList) {
             keywords.add(keyword.getWord());

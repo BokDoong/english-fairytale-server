@@ -25,7 +25,7 @@ public class Keyword {
     @NotNull
     private String word;
 
-    @OneToMany(mappedBy = "keyword")
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
 
     @Builder

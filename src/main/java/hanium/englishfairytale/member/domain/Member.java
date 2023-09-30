@@ -33,7 +33,7 @@ public class Member {
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Tale> tales = new ArrayList<>();
 
     @Builder

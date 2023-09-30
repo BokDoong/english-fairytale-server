@@ -9,8 +9,5 @@ public interface TaleRepository {
 
     Optional<Keyword> findByWord(String word);
 
-    List<Tale> findTalesList(Long userId, int offset, int limit);
-
-    Optional<Tale> findTaleDetailInfo(Long taleId);
-
+    void deleteByTaleKeywordId(Long taleId);
 }
