@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.security.Key;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +28,11 @@ public class TaleJpaRepository implements TaleRepository {
                 .getResultList();
 
         return keywords.stream().findAny();
+    }
+
+    @Override
+    public void deleteByTaleKeywordId(Long taleKeywordId) {
+        em.createQuery("delete from TaleKeyword where id = :taleKeywordId")
+                .setParameter("taleKeywordId", taleKeywordId);
     }
 }

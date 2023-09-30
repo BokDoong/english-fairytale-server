@@ -1,5 +1,6 @@
 package hanium.englishfairytale.tale.domain;
 
+import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import lombok.*;
 
@@ -27,16 +28,26 @@ public class Tale {
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "tale")
+    @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
-    public Tale(String title, String engTale, String korTale) {
+    public Tale(String title, String engTale, String korTale, Member member) {
         this.title = title;
         this.engTale = engTale;
         this.korTale = korTale;
         this.image = new Image();
         this.createdTime = LocalDateTime.now();
+
+        this.member = member;
+        member.addTale(this);
+    }
+
+    public String getMemberName() {
+        return this.member.getName();
     }
 
     public void putImage(TaleImage taleImage) {

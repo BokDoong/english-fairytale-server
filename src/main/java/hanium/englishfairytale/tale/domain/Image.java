@@ -1,8 +1,11 @@
 package hanium.englishfairytale.tale.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Embeddable
+@Getter
 public class Image {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="taleImage_id")
@@ -10,5 +13,8 @@ public class Image {
 
     void putTaleImage(TaleImage newtaleImage) {
         taleImage = newtaleImage;
+    }
+    public String getUrl() {
+        return taleImage.getImageUrl();
     }
 }

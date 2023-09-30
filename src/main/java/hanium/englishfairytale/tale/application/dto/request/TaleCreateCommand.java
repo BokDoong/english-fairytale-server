@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @Getter
 public class TaleCreateCommand {
+    private long memberId;
     private String model;
     private List<String> keywords;
     private MultipartFile image;

@@ -13,14 +13,14 @@ public class TaleKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="tale_id")
+    @JoinColumn(name = "tale_id")
     private Tale tale;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="keyword_id")
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     public static TaleKeyword createTaleKeyword(Tale tale, Keyword keyword) {
@@ -35,6 +35,7 @@ public class TaleKeyword {
         this.tale = newTale;
         newTale.addTaleKeyword(this);
     }
+
     private void setKeyword(Keyword newKeyword) {
         keyword = newKeyword;
         newKeyword.addTaleKeyword(this);
