@@ -23,7 +23,7 @@ public class TaleJpaRepository implements TaleRepository {
 
     @Override
     public Optional<Keyword> findByWord(String word) {
-        List<Keyword> keywords = em.createQuery("select k from Keyword k where k.word = :word", Keyword.class)
+        List<Keyword> keywords = em.createQuery("select k from Keyword k where k.word in :word", Keyword.class)
                 .setParameter("word", word)
                 .getResultList();
 
@@ -32,7 +32,7 @@ public class TaleJpaRepository implements TaleRepository {
 
     @Override
     public void deleteByTaleKeywordId(Long taleKeywordId) {
-        em.createQuery("delete from TaleKeyword where id = :taleKeywordId")
+        em.createQuery("delete from TaleKeyword where id in :taleKeywordId")
                 .setParameter("taleKeywordId", taleKeywordId);
     }
 }

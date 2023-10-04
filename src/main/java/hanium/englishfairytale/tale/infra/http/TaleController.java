@@ -29,7 +29,7 @@ public class TaleController {
 
     @PostMapping("create")
     public ResponseEntity<TaleCreateResponse> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
-                                                     @RequestPart(required = false) MultipartFile image){
+                                                     @RequestPart(required = false) MultipartFile image) {
         return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
     }
 

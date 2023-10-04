@@ -20,8 +20,7 @@ public class TaleQueryDao {
         return em.createQuery(
                         "select t from Tale t" +
                                 " join fetch t.member m" +
-                                " join fetch t.image i" +
-                                " join fetch i.taleImage ti" +
+                                " left join fetch t.image.taleImage ti" +
                                 " where m.id = :memberId" +
                                 " order by t.createdTime desc", Tale.class
                 )
@@ -36,8 +35,7 @@ public class TaleQueryDao {
         List<Tale> tales =  em.createQuery(
                         "select t from Tale t" +
                                 " join fetch t.member m" +
-                                " join fetch t.image i" +
-                                " join fetch i.taleImage ti" +
+                                " left join fetch t.image.taleImage ti" +
                                 " where t.id = :taleId", Tale.class
                 )
                 .setParameter("taleId", taleId)
@@ -50,7 +48,7 @@ public class TaleQueryDao {
     public List<Keyword> findKeywordByTaleId(Long taleId) {
         return em.createQuery(
                         "select k from Keyword k" +
-                                " left join k.taleKeywords tk" +
+                                " join k.taleKeywords tk" +
                                 " where tk.tale.id = :taleId", Keyword.class
                 )
                 .setParameter("taleId", taleId)
