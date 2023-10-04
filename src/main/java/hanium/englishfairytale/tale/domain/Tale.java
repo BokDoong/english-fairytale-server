@@ -30,7 +30,7 @@ public class Tale {
 
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 

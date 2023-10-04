@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.infra;
 
 import hanium.englishfairytale.tale.domain.Keyword;
+import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,8 @@ public class TaleJpaRepository implements TaleRepository {
     }
 
     @Override
-    public void deleteByTaleKeywordId(Long taleKeywordId) {
-        em.createQuery("delete from TaleKeyword where id in :taleKeywordId")
-                .setParameter("taleKeywordId", taleKeywordId);
+    public void deleteByTaleId(Long taleId) {
+        Tale tale = em.find(Tale.class, taleId);
+        em.remove(tale);
     }
 }
