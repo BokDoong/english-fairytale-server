@@ -1,10 +1,7 @@
 package hanium.englishfairytale.tale.infra.http;
 
 import hanium.englishfairytale.tale.application.TaleQueryService;
-import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
-import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
-import hanium.englishfairytale.tale.application.dto.response.TalesInfo;
-import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
+import hanium.englishfairytale.tale.application.dto.*;
 import hanium.englishfairytale.tale.application.TaleCommandService;
 import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
@@ -28,13 +25,8 @@ public class TaleController {
 
     @PostMapping("create")
     public ResponseEntity<TaleCreateResponse> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
-                                                     @RequestPart(required = false) MultipartFile image) {
+                                                     @RequestPart MultipartFile image) {
         return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{taleId}")
-    public void delete(@PathVariable Long taleId) {
-        taleService.delete(taleId);
     }
 
     @GetMapping("/recent")
@@ -52,7 +44,21 @@ public class TaleController {
         return new ResponseEntity<>(taleQueryService.findDetailTale(taleId), HttpStatus.OK);
     }
 
+    @PutMapping("/{taleId}")
+    public void update(@PathVariable Long taleId, @RequestPart MultipartFile image) {
+        taleService.update(toUpdateCommand(taleId, image));
+    }
+
+    @DeleteMapping("/{taleId}")
+    public void delete(@PathVariable Long taleId) {
+        taleService.delete(taleId);
+    }
+
     private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto, MultipartFile image) {
-        return converter.toCommand(taleCreateDto, image);
+        return converter.toCreateCommand(taleCreateDto, image);
+    }
+
+    private TaleUpdateCommand toUpdateCommand(Long taleId, MultipartFile image) {
+        return converter.toUpdateCommand(taleId, image);
     }
 }

@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,8 +12,8 @@ public class Image {
     @JoinColumn(name="taleImage_id")
     private TaleImage taleImage;
 
-    void putTaleImage(TaleImage newtaleImage) {
-        taleImage = newtaleImage;
+    void putTaleImage(TaleImage taleImage) {
+        this.taleImage = taleImage;
     }
     public String getUrl() {
         return taleImage.getImageUrl();

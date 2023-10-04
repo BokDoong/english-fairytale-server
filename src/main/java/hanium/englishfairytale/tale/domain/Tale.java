@@ -41,7 +41,6 @@ public class Tale {
         this.korTale = korTale;
         this.image = new Image();
         this.createdTime = LocalDateTime.now();
-
         this.member = member;
         member.addTale(this);
     }
@@ -57,5 +56,4 @@ public class Tale {
     public void addTaleKeyword(TaleKeyword newTaleKeyword) {
         this.taleKeywords.add(newTaleKeyword);
     }
-
 }

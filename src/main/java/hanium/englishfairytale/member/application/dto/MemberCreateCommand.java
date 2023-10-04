@@ -1,4 +1,4 @@
-package hanium.englishfairytale.member.application.dto.request;
+package hanium.englishfairytale.member.application.dto;
 
 import lombok.Builder;
 import lombok.Getter;

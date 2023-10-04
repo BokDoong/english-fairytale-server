@@ -1,6 +1,6 @@
 package hanium.englishfairytale.member.application;
 
-import hanium.englishfairytale.tale.application.dto.response.TalesInfo;
+import hanium.englishfairytale.tale.application.dto.TalesInfo;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.TaleKeyword;
 import hanium.englishfairytale.tale.domain.TaleRepository;
