@@ -26,7 +26,7 @@ public class TaleDetailInfo {
         this.memberName = tale.getMemberName();
         this.engTale = tale.getEngTale();
         this.korTale = tale.getKorTale();
-        this.imageUrl = tale.getImage().getUrl();
+        this.imageUrl = tale.getImage() != null ? tale.getImage().getUrl() : null;
         keywords = new ArrayList<>();
         for (Keyword keyword : keywordList) {
             keywords.add(keyword.getWord());
