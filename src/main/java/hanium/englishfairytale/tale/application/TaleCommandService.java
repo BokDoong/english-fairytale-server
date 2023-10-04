@@ -44,18 +44,16 @@ public class TaleCommandService {
     // TODO: 2023.09.30 동화삭제 API 버그
     @Transactional
     public void delete(Long taleId) {
-        Tale tale = verifyExistedTale(taleId);
-        deleteTales(tale);
+        verifyExistedTale(taleId);
+        deleteTales(taleId);
     }
 
-    private void deleteTales(Tale tale) {
-        for (TaleKeyword taleKeyword : tale.getTaleKeywords()) {
-            taleRepository.deleteByTaleKeywordId(taleKeyword.getId());
-        }
+    private void deleteTales(Long taleId) {
+        taleRepository.deleteByTaleId(taleId);
     }
 
-    private Tale verifyExistedTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
+    private void verifyExistedTale(Long taleId) {
+        taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 

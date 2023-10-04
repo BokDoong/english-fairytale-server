@@ -6,7 +6,6 @@ import hanium.englishfairytale.tale.application.dto.response.TaleDetailInfo;
 import hanium.englishfairytale.tale.application.dto.response.TalesInfo;
 import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
 import hanium.englishfairytale.tale.application.TaleCommandService;
-import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
 import lombok.RequiredArgsConstructor;
