@@ -12,6 +12,7 @@ public enum TaleCode {
     KEYWORD_DUPLICATED("T-003"),
     IMAGE_IO("T-004"),
     NON_CREATED("T-005"),
+    NON_EXISTED_IMAGE("T-006"),
     ;
 
     private final String code;

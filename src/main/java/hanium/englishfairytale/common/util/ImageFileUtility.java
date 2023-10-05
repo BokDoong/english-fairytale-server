@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.domain;
+package hanium.englishfairytale.common.util;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.experimental.UtilityClass;

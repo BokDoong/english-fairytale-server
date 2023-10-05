@@ -1,8 +1,9 @@
-package hanium.englishfairytale.tale.application;
+package hanium.englishfairytale.common.files;
 
+import hanium.englishfairytale.common.util.ImageFileUtility;
 import hanium.englishfairytale.exception.RuntimeIOException;
 import hanium.englishfairytale.exception.code.ErrorCode;
-import hanium.englishfairytale.tale.domain.*;
+import hanium.englishfairytale.tale.application.dto.TaleImageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,23 +16,17 @@ import java.io.IOException;
 public class FileManageService {
 
     private final FileStore fileStore;
-    private final ImageRepository imageRepository;
 
     @Transactional
-    public String uploadImage(Tale tale, MultipartFile image) {
+    public TaleImageInfo uploadTaleImage(MultipartFile image) {
         try {
-            String storedName = ImageFileUtility.createObjectNameByUUID(image.getOriginalFilename());
+            String originalName = image.getOriginalFilename();
+            String storedName = ImageFileUtility.createObjectNameByUUID(originalName);
             String imageUrl = fileStore.upload(storedName, image.getInputStream(), ImageFileUtility.createObjectMetadata(image));
 
-            return saveImage(tale, image.getOriginalFilename(), storedName, imageUrl);
+            return new TaleImageInfo(originalName, storedName, imageUrl);
         } catch (IOException e) {
             throw new RuntimeIOException(e, ErrorCode.IMAGE_PROCESSING_IO);
         }
-    }
-
-    @Transactional
-    public String saveImage(Tale tale, String originalName, String storedName, String imageUrl) {
-        TaleImage taleImage = TaleImage.createTaleImage(tale, originalName, storedName, imageUrl);
-        return imageRepository.save(taleImage);
     }
 }

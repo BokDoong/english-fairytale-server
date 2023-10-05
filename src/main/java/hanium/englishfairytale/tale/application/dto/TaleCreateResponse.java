@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.application.dto.response;
+package hanium.englishfairytale.tale.application.dto;
 
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
@@ -18,12 +18,12 @@ public class TaleCreateResponse {
     private List<String> keywords;
     private String imgUrl;
 
-    public TaleCreateResponse(Tale tale, List<Keyword> newKeywords, String imgUrl) {
+    public TaleCreateResponse(Tale tale, List<Keyword> newKeywords) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
         this.content = tale.getEngTale();
         this.kor = tale.getKorTale();
-        this.imgUrl = imgUrl;
+        this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
 
         keywords = new ArrayList<>();
         for(Keyword keyword:newKeywords) {

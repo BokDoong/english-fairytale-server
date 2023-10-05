@@ -2,8 +2,8 @@ package hanium.englishfairytale.member.application;
 
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
-import hanium.englishfairytale.member.application.dto.request.MemberCreateCommand;
-import hanium.englishfairytale.member.application.dto.response.CreateMemberResponse;
+import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
+import hanium.englishfairytale.member.application.dto.CreateMemberResponse;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -25,6 +25,6 @@ public class MemberCreateDto {
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
     @NotNull
-    @Size(min = 2, max = 10)
+    @Pattern(regexp = "^(?i)(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{2,10}$")
     private String password;
 }

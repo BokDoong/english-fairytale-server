@@ -1,7 +1,6 @@
 package hanium.englishfairytale.member.domain;
 
 import hanium.englishfairytale.tale.domain.Tale;
-import hanium.englishfairytale.tale.domain.TaleKeyword;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +29,8 @@ public class Member {
     private String email;
     @Column(name = "password")
     private String password;
+    @Embedded
+    private Image image;
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
@@ -49,5 +50,8 @@ public class Member {
 
     public void addTale(Tale newTale) {
         this.tales.add(newTale);
+    }
+    public void putImage(MemberImage memberImage) {
+        image.putMemberImage(memberImage);
     }
 }

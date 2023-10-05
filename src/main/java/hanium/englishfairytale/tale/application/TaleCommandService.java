@@ -1,15 +1,15 @@
 package hanium.englishfairytale.tale.application;
 
+import hanium.englishfairytale.common.files.FileManageService;
+import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.member.domain.MemberRepository;
-import hanium.englishfairytale.tale.application.dto.request.TaleCreateCommand;
-import hanium.englishfairytale.tale.domain.Keyword;
-import hanium.englishfairytale.tale.domain.TaleKeyword;
-import hanium.englishfairytale.tale.domain.TaleRepository;
-import hanium.englishfairytale.tale.application.dto.response.TaleCreateResponse;
-import hanium.englishfairytale.tale.domain.Tale;
+import hanium.englishfairytale.tale.application.dto.TaleCreateCommand;
+import hanium.englishfairytale.tale.application.dto.TaleUpdateCommand;
+import hanium.englishfairytale.tale.domain.*;
+import hanium.englishfairytale.tale.application.dto.TaleCreateResponse;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import hanium.englishfairytale.tale.infra.TaleQueryDao;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,7 @@ public class TaleCommandService {
 
     private final MemberRepository memberRepository;
     private final TaleRepository taleRepository;
+    private final ImageRepository imageRepository;
     private final TaleQueryDao taleQueryDao;
     private final TaleManageService taleManageService;
     private final FileManageService fileManageService;
@@ -34,26 +35,46 @@ public class TaleCommandService {
     @Transactional
     public TaleCreateResponse create(TaleCreateCommand taleCreateCommand) {
         Tale tale = createTale(taleCreateCommand);
-        List<Keyword> keywords = createKeywords(taleCreateCommand);
-        String imageUrl = saveTaleKeywordAndGetImageUrl(tale, keywords, taleCreateCommand.getImage());
-
-        return new TaleCreateResponse(tale, keywords, imageUrl);
+        List<Keyword> keywords = findAndCreateKeywords(taleCreateCommand);
+        return saveTaleAndKeywords(tale, keywords, taleCreateCommand.getImage());
     }
 
-
-    // TODO: 2023.09.30 동화삭제 API 버그
     @Transactional
-    public void delete(Long taleId) {
-        verifyExistedTale(taleId);
-        deleteTales(taleId);
-    }
-
-    private void deleteTales(Long taleId) {
+    public void deleteTale(Long taleId) {
+        findExistedTale(taleId);
         taleRepository.deleteByTaleId(taleId);
     }
 
-    private void verifyExistedTale(Long taleId) {
-        taleQueryDao.findTaleByTaleId(taleId)
+    @Transactional
+    public void updateTaleImage(TaleUpdateCommand taleUpdateCommand) {
+        Tale tale = findExistedTale(taleUpdateCommand.getTaleId());
+        tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
+    }
+
+    @Transactional
+    public void deleteTaleImage(Long taleId) {
+        Tale tale = findExistedTale(taleId);
+        Long imageId = findImageId(tale);
+        tale.makeImageNull();
+        deleteImage(imageId);
+    }
+
+    private void deleteImage(Long imageUrl) {
+        imageRepository.delete(imageUrl);
+    }
+
+    private Long findImageId(Tale tale) {
+        verifyImageIsEmpty(tale);
+        return tale.getImageId();
+    }
+
+    private void verifyImageIsEmpty(Tale tale) {
+        if (tale.checkImageEmpty())
+            throw new BusinessException(ErrorCode.IMAGE_NON_EXITED);
+    }
+
+    private Tale findExistedTale(Long taleId) {
+        return taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
@@ -74,38 +95,37 @@ public class TaleCommandService {
     }
 
     private CreatedTale createEnglishTale(TaleCreateCommand taleCreateCommand) {
-        verifyKeywords(taleCreateCommand);
+        verifyInputKeywords(taleCreateCommand);
         return taleManageService.post(taleCreateCommand.getModel(), taleCreateCommand.getKeywords());
     }
 
-    private void verifyKeywords(TaleCreateCommand taleCreateCommand) {
+    private void verifyInputKeywords(TaleCreateCommand taleCreateCommand) {
         Keyword.verifyNumberOfKeywords(taleCreateCommand.getKeywords());
         Keyword.verifyDuplicatedKeywords(taleCreateCommand.getKeywords());
     }
 
-    private String saveTaleKeywordAndGetImageUrl(Tale tale, List<Keyword> keywords, MultipartFile image) {
+    private TaleCreateResponse saveTaleAndKeywords(Tale tale, List<Keyword> keywords, MultipartFile image) {
+        if (!image.isEmpty()) {
+            tale.putImage(saveTaleImage(image));
+        }
+        saveTaleKeywords(tale, keywords);
+        return new TaleCreateResponse(tale,keywords);
+    }
+
+    private void saveTaleKeywords(Tale tale, List<Keyword> keywords) {
         for(Keyword keyword: keywords) {
             taleRepository.save(TaleKeyword.createTaleKeyword(tale, keyword));
         }
-        return saveAndGetImageUrl(tale, image);
     }
 
-    private String saveAndGetImageUrl(Tale tale, MultipartFile image) {
-        if (image == null) {
-            return null;
-        }
-
-        return fileManageService.uploadImage(tale, image);
+    private TaleImage saveTaleImage(MultipartFile image) {
+        return new TaleImage(fileManageService.uploadTaleImage(image));
     }
 
-    private List<Keyword> createKeywords(TaleCreateCommand taleCreateCommand) {
-        return findAndCreateKeywords(taleCreateCommand.getKeywords());
-    }
-
-    private List<Keyword> findAndCreateKeywords(List<String> words) {
+    private List<Keyword> findAndCreateKeywords(TaleCreateCommand taleCreateCommand) {
         List<Keyword> keywords = new ArrayList<>();
 
-        words.forEach(word -> {
+        taleCreateCommand.getKeywords().forEach(word -> {
             Optional<Keyword> optionalKeyword = taleRepository.findByWord(word);
             if (optionalKeyword.isEmpty()) {
                 keywords.add(Keyword.builder().word(word).build());

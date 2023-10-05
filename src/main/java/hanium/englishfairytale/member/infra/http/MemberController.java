@@ -1,8 +1,8 @@
 package hanium.englishfairytale.member.infra.http;
 
 import hanium.englishfairytale.member.application.MemberCommandService;
-import hanium.englishfairytale.member.application.dto.request.MemberCreateCommand;
-import hanium.englishfairytale.member.application.dto.response.CreateMemberResponse;
+import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
+import hanium.englishfairytale.member.application.dto.CreateMemberResponse;
 import hanium.englishfairytale.member.infra.http.dto.MemberCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

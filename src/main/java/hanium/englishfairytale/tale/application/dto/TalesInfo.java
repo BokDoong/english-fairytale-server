@@ -1,4 +1,4 @@
-package hanium.englishfairytale.tale.application.dto.response;
+package hanium.englishfairytale.tale.application.dto;
 
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
