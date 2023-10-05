@@ -48,15 +48,7 @@ public class TaleCommandService {
     @Transactional
     public void updateTaleImage(TaleUpdateCommand taleUpdateCommand) {
         Tale tale = findTale(taleUpdateCommand.getTaleId());
-        if (!verifyUpdateImageEmpty(taleUpdateCommand)) {
-            tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
-        } else {
-            tale.deleteTaleImage(taleUpdateCommand.getTaleId());
-        }
-    }
-
-    private boolean verifyUpdateImageEmpty(TaleUpdateCommand taleUpdateCommand) {
-        return taleUpdateCommand.getImage().isEmpty();
+        tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
     }
 
     private Tale findTale(Long taleId) {

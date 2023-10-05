@@ -68,10 +68,4 @@ public class Tale {
             image.putTaleImage(taleImage);
         }
     }
-
-    public void deleteTaleImage(Long taleId) {
-        if(image != null)
-            throw new BusinessException(ErrorCode.IMAGE_NON_EXITED);
-        System.out.println("여기까지 성공");
-    }
 }
