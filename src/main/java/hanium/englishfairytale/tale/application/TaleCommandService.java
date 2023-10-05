@@ -41,23 +41,40 @@ public class TaleCommandService {
 
     @Transactional
     public void deleteTale(Long taleId) {
-        verifyExistedTale(taleId);
+        findExistedTale(taleId);
         taleRepository.deleteByTaleId(taleId);
     }
 
     @Transactional
     public void updateTaleImage(TaleUpdateCommand taleUpdateCommand) {
-        Tale tale = findTale(taleUpdateCommand.getTaleId());
+        Tale tale = findExistedTale(taleUpdateCommand.getTaleId());
         tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
     }
 
-    private Tale findTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
+    @Transactional
+    public void deleteTaleImage(Long taleId) {
+        Tale tale = findExistedTale(taleId);
+        Long imageId = findImageId(tale);
+        tale.makeImageNull();
+        deleteImage(imageId);
     }
 
-    private void verifyExistedTale(Long taleId) {
-        taleQueryDao.findTaleByTaleId(taleId)
+    private void deleteImage(Long imageUrl) {
+        imageRepository.delete(imageUrl);
+    }
+
+    private Long findImageId(Tale tale) {
+        verifyImageIsEmpty(tale);
+        return tale.getImageId();
+    }
+
+    private void verifyImageIsEmpty(Tale tale) {
+        if (tale.checkImageEmpty())
+            throw new BusinessException(ErrorCode.IMAGE_NON_EXITED);
+    }
+
+    private Tale findExistedTale(Long taleId) {
+        return taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 

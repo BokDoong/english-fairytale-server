@@ -1,10 +1,6 @@
 package hanium.englishfairytale.tale.domain;
 
-import hanium.englishfairytale.exception.BusinessException;
-import hanium.englishfairytale.exception.RuntimeIOException;
-import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
-import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +29,7 @@ public class Tale {
 
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -67,5 +63,17 @@ public class Tale {
         } else {
             image.putTaleImage(taleImage);
         }
+    }
+
+    public boolean checkImageEmpty() {
+        return image == null;
+    }
+
+    public Long getImageId() {
+        return this.image.getTaleImage().getId();
+    }
+
+    public void makeImageNull() {
+        this.image = null;
     }
 }
