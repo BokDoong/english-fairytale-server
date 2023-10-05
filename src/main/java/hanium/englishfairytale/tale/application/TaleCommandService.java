@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.application;
 
 import hanium.englishfairytale.common.files.FileManageService;
+import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
@@ -26,6 +27,7 @@ public class TaleCommandService {
 
     private final MemberRepository memberRepository;
     private final TaleRepository taleRepository;
+    private final ImageRepository imageRepository;
     private final TaleQueryDao taleQueryDao;
     private final TaleManageService taleManageService;
     private final FileManageService fileManageService;
@@ -37,25 +39,29 @@ public class TaleCommandService {
         return saveTaleAndKeywords(tale, keywords, taleCreateCommand.getImage());
     }
 
-    // TODO: 2023.10.04 동화이미지 수정 API
     @Transactional
-    public void update(TaleUpdateCommand taleUpdateCommand) {
-        Tale tale = findTale(taleUpdateCommand.getTaleId());
+    public void deleteTale(Long taleId) {
+        verifyExistedTale(taleId);
+        taleRepository.deleteByTaleId(taleId);
     }
 
     @Transactional
-    public void delete(Long taleId) {
-        verifyExistedTale(taleId);
-        deleteTales(taleId);
+    public void updateTaleImage(TaleUpdateCommand taleUpdateCommand) {
+        Tale tale = findTale(taleUpdateCommand.getTaleId());
+        if (!verifyUpdateImageEmpty(taleUpdateCommand)) {
+            tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
+        } else {
+            tale.deleteTaleImage(taleUpdateCommand.getTaleId());
+        }
+    }
+
+    private boolean verifyUpdateImageEmpty(TaleUpdateCommand taleUpdateCommand) {
+        return taleUpdateCommand.getImage().isEmpty();
     }
 
     private Tale findTale(Long taleId) {
         return taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
-    }
-
-    private void deleteTales(Long taleId) {
-        taleRepository.deleteByTaleId(taleId);
     }
 
     private void verifyExistedTale(Long taleId) {
@@ -91,7 +97,7 @@ public class TaleCommandService {
 
     private TaleCreateResponse saveTaleAndKeywords(Tale tale, List<Keyword> keywords, MultipartFile image) {
         if (!image.isEmpty()) {
-            saveTaleImage(tale, image);
+            tale.putImage(saveTaleImage(image));
         }
         saveTaleKeywords(tale, keywords);
         return new TaleCreateResponse(tale,keywords);
@@ -103,9 +109,8 @@ public class TaleCommandService {
         }
     }
 
-    private void saveTaleImage(Tale tale, MultipartFile image) {
-        TaleImage taleImage = new TaleImage(fileManageService.uploadTaleImage(image));
-        tale.putImage(taleImage);
+    private TaleImage saveTaleImage(MultipartFile image) {
+        return new TaleImage(fileManageService.uploadTaleImage(image));
     }
 
     private List<Keyword> findAndCreateKeywords(TaleCreateCommand taleCreateCommand) {

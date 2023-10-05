@@ -1,7 +1,6 @@
 package hanium.englishfairytale.tale.domain;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

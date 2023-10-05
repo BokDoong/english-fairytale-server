@@ -1,5 +1,8 @@
 package hanium.englishfairytale.tale.domain;
 
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.RuntimeIOException;
+import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
 import lombok.*;
@@ -55,5 +58,20 @@ public class Tale {
 
     public void addTaleKeyword(TaleKeyword newTaleKeyword) {
         this.taleKeywords.add(newTaleKeyword);
+    }
+
+    public void updateTaleImage(TaleImage taleImage) {
+        if (image == null) {
+            this.image = new Image();
+            this.image.putTaleImage(taleImage);
+        } else {
+            image.putTaleImage(taleImage);
+        }
+    }
+
+    public void deleteTaleImage(Long taleId) {
+        if(image != null)
+            throw new BusinessException(ErrorCode.IMAGE_NON_EXITED);
+        System.out.println("여기까지 성공");
     }
 }

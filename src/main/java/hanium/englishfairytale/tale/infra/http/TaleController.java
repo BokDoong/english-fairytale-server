@@ -44,14 +44,14 @@ public class TaleController {
         return new ResponseEntity<>(taleQueryService.findDetailTale(taleId), HttpStatus.OK);
     }
 
-    @PutMapping("/{taleId}")
-    public void update(@PathVariable Long taleId, @RequestPart MultipartFile image) {
-        taleService.update(toUpdateCommand(taleId, image));
-    }
-
     @DeleteMapping("/{taleId}")
     public void delete(@PathVariable Long taleId) {
-        taleService.delete(taleId);
+        taleService.deleteTale(taleId);
+    }
+
+    @PutMapping("/{taleId}/image")
+    public void updateImage(@PathVariable Long taleId, @RequestPart MultipartFile image) {
+        taleService.updateTaleImage(toUpdateCommand(taleId, image));
     }
 
     private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto, MultipartFile image) {
