@@ -55,12 +55,12 @@ public class TaleQueryDao {
     }
 
     // 동화개수 조회
-    public int countTales(Long memberId) {
-        return em.createQuery(
+    public Long countTales(Long memberId) {
+        return (Long) em.createQuery(
                 "select count(nullif(t, 0)) from Tale t" +
                         " where t.member.id = :memberId"
         )
                 .setParameter("memberId", memberId)
-                .getFirstResult();
+                .getSingleResult();
     }
 }
