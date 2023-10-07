@@ -15,12 +15,6 @@ public class ImageJpaRepository implements ImageRepository {
     private final EntityManager em;
 
     @Override
-    public String save(TaleImage taleImage) {
-        em.persist(taleImage);
-        return taleImage.getImageUrl();
-    }
-
-    @Override
     public void delete(Long taleImageId) {
         TaleImage taleImage = em.find(TaleImage.class, taleImageId);
         em.remove(taleImage);

@@ -16,12 +16,12 @@ public class MemberJpaRepository implements MemberRepository {
     private final EntityManager em;
 
     @Override
-    public Optional<Member> findById(Long memberId) {
+    public Optional<Member> findMemberById(Long memberId) {
         return Optional.ofNullable(em.find(Member.class, memberId));
     }
 
     @Override
-    public Optional<Member> findByPhoneNumber(String phoneNumber) {
+    public Optional<Member> findMemberByPhoneNumber(String phoneNumber) {
         List<Member> members = em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
                 .setParameter("phoneNumber", phoneNumber)
                 .getResultList();
@@ -29,7 +29,7 @@ public class MemberJpaRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByNickname(String nickName) {
+    public Optional<Member> findByMemberNickname(String nickName) {
         List<Member> members = em.createQuery("select m from Member m where m.nickname = :nickName", Member.class)
                 .setParameter("nickName", nickName)
                 .getResultList();

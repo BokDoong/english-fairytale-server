@@ -40,7 +40,6 @@ public class TaleQueryDao {
                 )
                 .setParameter("taleId", taleId)
                 .getResultList();
-
         return tales.stream().findAny();
     }
 
@@ -53,5 +52,15 @@ public class TaleQueryDao {
                 )
                 .setParameter("taleId", taleId)
                 .getResultList();
+    }
+
+    // 동화개수 조회
+    public int countTales(Long memberId) {
+        return em.createQuery(
+                "select count(nullif(t, 0)) from Tale t" +
+                        " where t.member.id = :memberId"
+        )
+                .setParameter("memberId", memberId)
+                .getFirstResult();
     }
 }

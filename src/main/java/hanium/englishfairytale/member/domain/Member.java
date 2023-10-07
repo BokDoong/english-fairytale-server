@@ -34,7 +34,7 @@ public class Member {
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Tale> tales = new ArrayList<>();
 
     @Builder
@@ -45,6 +45,7 @@ public class Member {
         this.email = email;
         this.password = password;
         this.createdTime = LocalDateTime.now();
+        this.image = new Image();
         this.tales = new ArrayList<>();
     }
 
