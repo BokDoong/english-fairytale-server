@@ -20,13 +20,13 @@ import java.util.List;
 public class TaleController {
 
     private final TaleQueryService taleQueryService;
-    private final TaleCommandService taleService;
+    private final TaleCommandService taleCommandService;
     private final TaleDtoConverter converter;
 
     @PostMapping("create")
     public ResponseEntity<TaleCreateResponse> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
                                                      @RequestPart MultipartFile image) {
-        return new ResponseEntity<>(taleService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
+        return new ResponseEntity<>(taleCommandService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
     }
 
     @GetMapping("/recent")
@@ -46,17 +46,17 @@ public class TaleController {
 
     @DeleteMapping("/{taleId}")
     public void delete(@PathVariable Long taleId) {
-        taleService.deleteTale(taleId);
+        taleCommandService.deleteTale(taleId);
     }
 
     @PutMapping("/{taleId}/image")
     public void updateImage(@PathVariable Long taleId, @RequestPart MultipartFile image) {
-        taleService.updateTaleImage(toUpdateCommand(taleId, image));
+        taleCommandService.updateTaleImage(toUpdateCommand(taleId, image));
     }
 
     @DeleteMapping("/{taleId}/image")
     public void deleteImage(@PathVariable Long taleId) {
-        taleService.deleteTaleImage(taleId);
+        taleCommandService.deleteTaleImage(taleId);
     }
 
     private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto, MultipartFile image) {

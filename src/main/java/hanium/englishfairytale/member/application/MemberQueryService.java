@@ -1,35 +1,53 @@
 package hanium.englishfairytale.member.application;
 
-import hanium.englishfairytale.tale.application.dto.TalesInfo;
-import hanium.englishfairytale.tale.domain.Keyword;
-import hanium.englishfairytale.tale.domain.TaleKeyword;
-import hanium.englishfairytale.tale.domain.TaleRepository;
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.NotFoundException;
+import hanium.englishfairytale.exception.code.ErrorCode;
+import hanium.englishfairytale.member.application.dto.MemberDetailInfo;
+import hanium.englishfairytale.member.application.dto.MemberInfo;
+import hanium.englishfairytale.member.domain.Member;
+import hanium.englishfairytale.member.domain.MemberRepository;
+import hanium.englishfairytale.member.infra.MemberQueryDao;
+import hanium.englishfairytale.tale.infra.TaleQueryDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MemberQueryService {
 
-    private final TaleRepository taleRepository;
+    private final MemberRepository memberRepository;
+    private final MemberQueryDao memberQueryDao;
+    private final TaleQueryDao taleQueryDao;
 
-    @Transactional(readOnly = true)
-    public List<TalesInfo> findMainTalesInfo(Long memberId) {
-
-        // memberId -> Tale 조회 -> 최신순, Tale+Member+Image+TaleKeywords 나옴.
-        // 각 TaleKeyword 의 id값 -> Keywords 조회 -> 위에서 찾은 TaleKeyword 의 id 값을 넣는다. ->
-
-
-        return null;
+    @Transactional
+    public void verifyNickname(String nickname) {
+        verifyNicknameDuplicated(nickname);
     }
 
-    private List<Keyword> getKeywordsFromTaleKeyword(List<TaleKeyword> taleKeywords) {
-        return taleKeywords.stream()
-                .map(TaleKeyword::getKeyword)
-                .collect(Collectors.toList());
+    @Transactional
+    public MemberInfo findMemberInfo(Long memberId) {
+        return new MemberInfo(findMember(memberId), countTales(memberId));
+    }
+
+    @Transactional
+    public MemberDetailInfo findMemberDetailInfo(Long memberId) {
+        return new MemberDetailInfo(findMember(memberId));
+    }
+
+    private Member findMember(Long memberId) {
+        return memberQueryDao.findMemberAndImage(memberId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    private Long countTales(Long memberId) {
+        return taleQueryDao.countTales(memberId);
+    }
+
+    private void verifyNicknameDuplicated(String nickName) {
+        if (memberRepository.findByMemberNickname(nickName).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
+        }
     }
 }

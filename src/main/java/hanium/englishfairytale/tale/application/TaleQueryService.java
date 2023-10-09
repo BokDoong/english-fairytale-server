@@ -23,13 +23,14 @@ public class TaleQueryService {
     private final MemberRepository memberRepository;
 
     // 동화 상세조회
+    // TODO: 2023.10.06 좋아요 개수 표시
     @Transactional(readOnly = true)
     public TaleDetailInfo findDetailTale(Long taleId) {
         Tale tale = findTale(taleId);
         return convertTaleToDetailInfo(tale);
     }
 
-    // 마이 페이지(전체 조회)
+    // 동화 전체조회
     @Transactional(readOnly = true)
     public List<TalesInfo> findAllTales(Long memberId, int offset) {
         verifyExistedMember(memberId);
@@ -55,7 +56,7 @@ public class TaleQueryService {
     }
 
     private void verifyExistedMember(Long memberId) {
-        if (memberRepository.findById(memberId).isEmpty()) {
+        if (memberRepository.findMemberById(memberId).isEmpty()) {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         }
     }

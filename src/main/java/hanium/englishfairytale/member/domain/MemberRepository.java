@@ -4,11 +4,11 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-    Optional<Member> findById(Long userId);
+    Optional<Member> findMemberById(Long userId);
 
-    Optional<Member> findByPhoneNumber(String phoneNumber);
+    Optional<Member> findMemberByPhoneNumber(String phoneNumber);
 
-    Optional<Member> findByNickname(String nickName);
+    Optional<Member> findByMemberNickname(String nickName);
 
     Long save(Member member);
 }

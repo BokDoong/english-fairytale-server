@@ -1,17 +1,16 @@
 package hanium.englishfairytale.member.infra.http;
 
 import hanium.englishfairytale.member.application.MemberCommandService;
-import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
-import hanium.englishfairytale.member.application.dto.CreateMemberResponse;
+import hanium.englishfairytale.member.application.MemberQueryService;
+import hanium.englishfairytale.member.application.dto.*;
 import hanium.englishfairytale.member.infra.http.dto.MemberCreateDto;
+import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/member")
@@ -19,14 +18,59 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberCommandService memberCommandService;
+    private final MemberQueryService memberQueryService;
     private final MemberDtoConverter converter;
 
     @PostMapping("/register")
-    public ResponseEntity<CreateMemberResponse> register(@Validated @RequestBody MemberCreateDto memberCreateDto) {
-        return new ResponseEntity<>(memberCommandService.register(toCreateCommand(memberCreateDto)), HttpStatus.OK);
+    public ResponseEntity<Long> register(@Validated @RequestPart MemberCreateDto memberCreateDto,
+                                         @RequestPart MultipartFile image) {
+        return new ResponseEntity<>(memberCommandService.register(toCreateCommand(memberCreateDto, image)), HttpStatus.OK);
     }
 
-    private MemberCreateCommand toCreateCommand(MemberCreateDto memberCreateDto) {
-        return converter.toCommand(memberCreateDto);
+    @PostMapping("/check")
+    public void checkNicknameDuplicated(@RequestParam String nickname) {
+        memberQueryService.verifyNickname(nickname);
+    }
+
+    @GetMapping("{memberId}")
+    public ResponseEntity<MemberInfo> findMemberInfo(@PathVariable Long memberId) {
+        return new ResponseEntity<>(memberQueryService.findMemberInfo(memberId), HttpStatus.OK);
+    }
+
+    @GetMapping("{memberId}/detail")
+    public ResponseEntity<MemberDetailInfo> findMemberDetailInfo(@PathVariable Long memberId) {
+        return new ResponseEntity<>(memberQueryService.findMemberDetailInfo(memberId), HttpStatus.OK);
+    }
+
+    @PatchMapping("/nickname")
+    public void updateNickname(@RequestParam Long memberId, @RequestParam String nickname) {
+        memberCommandService.updateNickname(memberId, nickname);
+    }
+
+    @PatchMapping("/password")
+    public void updatePassword(@Validated @RequestBody MemberUpdatePasswordDto updatePasswordDto) {
+        memberCommandService.updatePassword(toPasswordUpdateCommand(updatePasswordDto));
+    }
+
+    @PatchMapping("/{memberId}/image")
+    public void updateImage(@PathVariable Long memberId, @RequestPart MultipartFile image) {
+        memberCommandService.updateMemberImage(toImageUpdateCommand(memberId, image));
+    }
+
+    @DeleteMapping("/{memberId}/image")
+    public void deleteImage(@PathVariable Long memberId) {
+        memberCommandService.deleteMemberImage(memberId);
+    }
+
+    private MemberCreateCommand toCreateCommand(MemberCreateDto memberCreateDto, MultipartFile image) {
+        return converter.toCommand(memberCreateDto, image);
+    }
+
+    private MemberUpdatePasswordCommand toPasswordUpdateCommand(MemberUpdatePasswordDto updatePasswordDto) {
+        return converter.toCommand(updatePasswordDto);
+    }
+
+    private MemberImageUpdateCommand toImageUpdateCommand(Long memberId, MultipartFile image) {
+        return converter.toCommand(memberId, image);
     }
 }

@@ -41,25 +41,25 @@ public class TaleCommandService {
 
     @Transactional
     public void deleteTale(Long taleId) {
-        findExistedTale(taleId);
+        findTale(taleId);
         taleRepository.deleteByTaleId(taleId);
     }
 
     @Transactional
     public void updateTaleImage(TaleUpdateCommand taleUpdateCommand) {
-        Tale tale = findExistedTale(taleUpdateCommand.getTaleId());
-        tale.updateTaleImage(saveTaleImage(taleUpdateCommand.getImage()));
+        Tale tale = findTale(taleUpdateCommand.getTaleId());
+        tale.updateTaleImage(createAndSaveTaleImage(taleUpdateCommand.getImage()));
     }
 
     @Transactional
     public void deleteTaleImage(Long taleId) {
-        Tale tale = findExistedTale(taleId);
+        Tale tale = findTale(taleId);
         Long imageId = findImageId(tale);
-        tale.makeImageNull();
-        deleteImage(imageId);
+        deleteImage(tale, imageId);
     }
 
-    private void deleteImage(Long imageUrl) {
+    private void deleteImage(Tale tale, Long imageUrl) {
+        tale.makeImageNull();
         imageRepository.delete(imageUrl);
     }
 
@@ -69,11 +69,10 @@ public class TaleCommandService {
     }
 
     private void verifyImageIsEmpty(Tale tale) {
-        if (tale.checkImageEmpty())
-            throw new BusinessException(ErrorCode.IMAGE_NON_EXITED);
+        tale.checkImageEmpty();
     }
 
-    private Tale findExistedTale(Long taleId) {
+    private Tale findTale(Long taleId) {
         return taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
@@ -90,7 +89,7 @@ public class TaleCommandService {
     }
 
     private Member findMember(Long memberId) {
-        return memberRepository.findById(memberId)
+        return memberRepository.findMemberById(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, memberId));
     }
 
@@ -106,7 +105,7 @@ public class TaleCommandService {
 
     private TaleCreateResponse saveTaleAndKeywords(Tale tale, List<Keyword> keywords, MultipartFile image) {
         if (!image.isEmpty()) {
-            tale.putImage(saveTaleImage(image));
+            tale.putImage(createAndSaveTaleImage(image));
         }
         saveTaleKeywords(tale, keywords);
         return new TaleCreateResponse(tale,keywords);
@@ -118,8 +117,8 @@ public class TaleCommandService {
         }
     }
 
-    private TaleImage saveTaleImage(MultipartFile image) {
-        return new TaleImage(fileManageService.uploadTaleImage(image));
+    private TaleImage createAndSaveTaleImage(MultipartFile image) {
+        return new TaleImage(fileManageService.uploadImage(image));
     }
 
     private List<Keyword> findAndCreateKeywords(TaleCreateCommand taleCreateCommand) {

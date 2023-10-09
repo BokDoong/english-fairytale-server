@@ -1,6 +1,6 @@
 package hanium.englishfairytale.tale.domain;
 
-import hanium.englishfairytale.tale.application.dto.TaleImageInfo;
+import hanium.englishfairytale.common.files.ImageInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,9 +25,9 @@ public class TaleImage {
     @Column(name = "image_url")
     private String imageUrl;
 
-    public TaleImage(TaleImageInfo taleImageInfo) {
-        this.originalName = taleImageInfo.getOriginalFileName();
-        this.storedName = taleImageInfo.getStoredName();
-        this.imageUrl = taleImageInfo.getImageUrl();
+    public TaleImage(ImageInfo imageInfo) {
+        this.originalName = imageInfo.getOriginalFileName();
+        this.storedName = imageInfo.getStoredName();
+        this.imageUrl = imageInfo.getImageUrl();
     }
 }

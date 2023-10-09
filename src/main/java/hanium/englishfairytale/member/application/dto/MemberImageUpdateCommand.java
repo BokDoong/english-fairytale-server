@@ -6,12 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
-public class MemberCreateCommand {
-    private String name;
-    private String phoneNumber;
-    private String nickname;
-    private String email;
-    private String password;
+public class MemberImageUpdateCommand {
+    private Long memberId;
     private MultipartFile image;
-
 }
