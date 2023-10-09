@@ -9,6 +9,7 @@ public enum MemberCode {
     NOT_FOUND("M-001"),
     MEMBER_EXISTED("M-002"),
     NICKNAME_DUPLICATED("M-003"),
+    NON_EXISTED_IMAGE("M-004"),
     ;
 
     private final String code;

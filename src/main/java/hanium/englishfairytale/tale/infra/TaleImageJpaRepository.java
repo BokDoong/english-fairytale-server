@@ -1,7 +1,6 @@
 package hanium.englishfairytale.tale.infra;
 
 import hanium.englishfairytale.tale.domain.ImageRepository;
-import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.domain.TaleImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +9,7 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class ImageJpaRepository implements ImageRepository {
+public class TaleImageJpaRepository implements ImageRepository {
 
     private final EntityManager em;
 

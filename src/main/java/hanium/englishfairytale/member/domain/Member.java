@@ -1,5 +1,7 @@
 package hanium.englishfairytale.member.domain;
 
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -54,5 +56,35 @@ public class Member {
     }
     public void putImage(MemberImage memberImage) {
         image.putMemberImage(memberImage);
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateMemberImage(MemberImage memberImage) {
+        if (image == null) {
+            this.image = new Image();
+            this.image.putMemberImage(memberImage);
+        } else {
+            image.putMemberImage(memberImage);
+        }
+    }
+
+    public void checkImageEmpty() {
+        if (image == null) {
+            throw new BusinessException(ErrorCode.MEMBER_IMAGE_NON_EXISTED);
+        }
+    }
+
+    public Long getImageId() {
+        return this.image.getMemberImage().getId();
+    }
+
+    public void makeImageNull() {
+        this.image = null;
     }
 }

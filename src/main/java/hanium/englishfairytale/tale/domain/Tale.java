@@ -1,5 +1,7 @@
 package hanium.englishfairytale.tale.domain;
 
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
 import lombok.*;
 
@@ -65,8 +67,10 @@ public class Tale {
         }
     }
 
-    public boolean checkImageEmpty() {
-        return image == null;
+    public void checkImageEmpty() {
+        if (image == null) {
+            throw new BusinessException(ErrorCode.TALE_IMAGE_NON_EXISTED);
+        }
     }
 
     public Long getImageId() {

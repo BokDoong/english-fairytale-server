@@ -22,8 +22,8 @@ public class MemberQueryService {
     private final TaleQueryDao taleQueryDao;
 
     @Transactional
-    public void verifyNickName(String nickName) {
-        verifyNicknameDuplicated(nickName);
+    public void verifyNickname(String nickname) {
+        verifyNicknameDuplicated(nickname);
     }
 
     @Transactional

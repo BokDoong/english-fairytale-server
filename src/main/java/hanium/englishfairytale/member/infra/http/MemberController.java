@@ -1,12 +1,10 @@
 package hanium.englishfairytale.member.infra.http;
 
-import com.amazonaws.Response;
 import hanium.englishfairytale.member.application.MemberCommandService;
 import hanium.englishfairytale.member.application.MemberQueryService;
-import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
-import hanium.englishfairytale.member.application.dto.MemberDetailInfo;
-import hanium.englishfairytale.member.application.dto.MemberInfo;
+import hanium.englishfairytale.member.application.dto.*;
 import hanium.englishfairytale.member.infra.http.dto.MemberCreateDto;
+import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +28,8 @@ public class MemberController {
     }
 
     @PostMapping("/check")
-    public void checkNicknameDuplicated(@RequestParam String nickName) {
-        memberQueryService.verifyNickName(nickName);
+    public void checkNicknameDuplicated(@RequestParam String nickname) {
+        memberQueryService.verifyNickname(nickname);
     }
 
     @GetMapping("{memberId}")
@@ -44,7 +42,35 @@ public class MemberController {
         return new ResponseEntity<>(memberQueryService.findMemberDetailInfo(memberId), HttpStatus.OK);
     }
 
+    @PatchMapping("/nickname")
+    public void updateNickname(@RequestParam Long memberId, @RequestParam String nickname) {
+        memberCommandService.updateNickname(memberId, nickname);
+    }
+
+    @PatchMapping("/password")
+    public void updatePassword(@Validated @RequestBody MemberUpdatePasswordDto updatePasswordDto) {
+        memberCommandService.updatePassword(toPasswordUpdateCommand(updatePasswordDto));
+    }
+
+    @PatchMapping("/{memberId}/image")
+    public void updateImage(@PathVariable Long memberId, @RequestPart MultipartFile image) {
+        memberCommandService.updateMemberImage(toImageUpdateCommand(memberId, image));
+    }
+
+    @DeleteMapping("/{memberId}/image")
+    public void deleteImage(@PathVariable Long memberId) {
+        memberCommandService.deleteMemberImage(memberId);
+    }
+
     private MemberCreateCommand toCreateCommand(MemberCreateDto memberCreateDto, MultipartFile image) {
         return converter.toCommand(memberCreateDto, image);
+    }
+
+    private MemberUpdatePasswordCommand toPasswordUpdateCommand(MemberUpdatePasswordDto updatePasswordDto) {
+        return converter.toCommand(updatePasswordDto);
+    }
+
+    private MemberImageUpdateCommand toImageUpdateCommand(Long memberId, MultipartFile image) {
+        return converter.toCommand(memberId, image);
     }
 }
