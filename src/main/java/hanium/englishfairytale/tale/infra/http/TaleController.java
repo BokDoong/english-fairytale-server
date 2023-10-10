@@ -55,8 +55,8 @@ public class TaleController {
     }
 
     @DeleteMapping("/{taleId}/image")
-    public void deleteImage(@PathVariable Long taleId) {
-        taleCommandService.deleteTaleImage(taleId);
+    public void deleteImage(@PathVariable Long taleId, @RequestParam String imageStatus) {
+        taleCommandService.deleteTaleImage(taleId, imageStatus);
     }
 
     private TaleCreateCommand toCreateCommand(TaleCreateDto taleCreateDto, MultipartFile image) {

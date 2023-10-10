@@ -13,6 +13,7 @@ public enum TaleCode {
     IMAGE_IO("T-004"),
     NON_CREATED("T-005"),
     NON_EXISTED_IMAGE("T-006"),
+    NON_IMAGE_STATUS("T-007"),
     ;
 
     private final String code;
