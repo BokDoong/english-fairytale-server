@@ -1,5 +1,6 @@
 package hanium.englishfairytale.tale.application.dto;
 
+import hanium.englishfairytale.tale.domain.ImageStatus;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,4 +14,5 @@ public class TaleCreateCommand {
     private String model;
     private List<String> keywords;
     private MultipartFile image;
+    private ImageStatus imageStatus;
 }

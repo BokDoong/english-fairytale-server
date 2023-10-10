@@ -17,7 +17,8 @@ public class TaleDetailInfo {
     private String memberName;
     private String engTale;
     private String korTale;
-    private String imageUrl;
+    private String imgUrl;
+    private String imageStatus;
     private List<String> keywords;
 
     public TaleDetailInfo(Tale tale, List<Keyword> keywordList) {
@@ -26,7 +27,9 @@ public class TaleDetailInfo {
         this.memberName = tale.getMemberName();
         this.engTale = tale.getEngTale();
         this.korTale = tale.getKorTale();
-        this.imageUrl = tale.getImage() != null ? tale.getImage().getUrl() : null;
+        this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
+        this.imageStatus = tale.getImageStatus();
+
         keywords = new ArrayList<>();
         for (Keyword keyword : keywordList) {
             keywords.add(keyword.getWord());

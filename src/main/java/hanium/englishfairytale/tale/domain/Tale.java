@@ -36,11 +36,11 @@ public class Tale {
     private Member member;
 
     @Builder
-    public Tale(String title, String engTale, String korTale, Member member) {
+    public Tale(String title, String engTale, String korTale, Member member, ImageStatus imageStatus) {
         this.title = title;
         this.engTale = engTale;
         this.korTale = korTale;
-        this.image = new Image();
+        this.image = new Image(imageStatus);
         this.createdTime = LocalDateTime.now();
         this.member = member;
         member.addTale(this);
@@ -59,16 +59,16 @@ public class Tale {
     }
 
     public void updateTaleImage(TaleImage taleImage) {
-        if (image == null) {
-            this.image = new Image();
-            this.image.putTaleImage(taleImage);
-        } else {
-            image.putTaleImage(taleImage);
-        }
+        image.putTaleImage(taleImage);
+        image.updateImageStatus();
+    }
+
+    public void putBasicImage(String imageStatus) {
+        this.image = new Image(ImageStatus.of(imageStatus));
     }
 
     public void checkImageEmpty() {
-        if (image == null) {
+        if (image.getTaleImage() == null) {
             throw new BusinessException(ErrorCode.TALE_IMAGE_NON_EXISTED);
         }
     }
@@ -77,7 +77,7 @@ public class Tale {
         return this.image.getTaleImage().getId();
     }
 
-    public void makeImageNull() {
-        this.image = null;
+    public String getImageStatus() {
+        return image.getImageStatus().getStatus();
     }
 }

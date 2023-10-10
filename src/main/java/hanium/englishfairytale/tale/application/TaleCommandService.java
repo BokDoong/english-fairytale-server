@@ -1,7 +1,6 @@
 package hanium.englishfairytale.tale.application;
 
 import hanium.englishfairytale.common.files.FileManageService;
-import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
@@ -52,23 +51,23 @@ public class TaleCommandService {
     }
 
     @Transactional
-    public void deleteTaleImage(Long taleId) {
+    public void deleteTaleImage(Long taleId, String imageStatus) {
         Tale tale = findTale(taleId);
-        Long imageId = findImageId(tale);
-        deleteImage(tale, imageId);
+        Long imageId = findTaleImageId(tale);
+        deleteImage(imageId);
+        tale.putBasicImage(imageStatus);
     }
 
-    private void deleteImage(Tale tale, Long imageUrl) {
-        tale.makeImageNull();
-        imageRepository.delete(imageUrl);
+    private void deleteImage(Long imageId) {
+        imageRepository.delete(imageId);
     }
 
-    private Long findImageId(Tale tale) {
-        verifyImageIsEmpty(tale);
+    private Long findTaleImageId(Tale tale) {
+        verifyTaleImageIsEmpty(tale);
         return tale.getImageId();
     }
 
-    private void verifyImageIsEmpty(Tale tale) {
+    private void verifyTaleImageIsEmpty(Tale tale) {
         tale.checkImageEmpty();
     }
 
@@ -85,6 +84,7 @@ public class TaleCommandService {
                 .engTale(createdTale.getEngTale())
                 .korTale(createdTale.getKorTale())
                 .member(member)
+                .imageStatus(taleCreateCommand.getImageStatus())
                 .build();
     }
 

@@ -17,6 +17,7 @@ public class TaleCreateResponse {
     private String kor;
     private List<String> keywords;
     private String imgUrl;
+    private String imgStatus;
 
     public TaleCreateResponse(Tale tale, List<Keyword> newKeywords) {
         this.taleId = tale.getId();
@@ -24,6 +25,7 @@ public class TaleCreateResponse {
         this.content = tale.getEngTale();
         this.kor = tale.getKorTale();
         this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
+        this.imgStatus = tale.getImageStatus();
 
         keywords = new ArrayList<>();
         for(Keyword keyword:newKeywords) {
