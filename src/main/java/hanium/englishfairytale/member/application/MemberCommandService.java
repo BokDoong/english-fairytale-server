@@ -4,7 +4,8 @@ import hanium.englishfairytale.common.files.FileManageService;
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
-import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
+import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
+import hanium.englishfairytale.member.application.dto.MemberRegisterCommand;
 import hanium.englishfairytale.member.application.dto.MemberImageUpdateCommand;
 import hanium.englishfairytale.member.application.dto.MemberUpdatePasswordCommand;
 import hanium.englishfairytale.member.domain.ImageRepository;
@@ -25,9 +26,16 @@ public class MemberCommandService {
     private final FileManageService fileManageService;
 
     @Transactional
-    public Long register(MemberCreateCommand memberCreateCommand) {
-        verifyExistedMember(memberCreateCommand);
-        return createAndSaveMember(memberCreateCommand);
+    public Long register(MemberRegisterCommand memberRegisterCommand) {
+        verifyExistedMember(memberRegisterCommand);
+        return createAndSaveMember(memberRegisterCommand);
+    }
+
+    @Transactional
+    public Long login(MemberLoginCommand memberLoginCommand) {
+        Member member = findMemberForLogin(memberLoginCommand);
+        member.verifyCorrectPassword(memberLoginCommand);
+        return member.getId();
     }
 
     @Transactional
@@ -55,6 +63,11 @@ public class MemberCommandService {
         deleteImage(member, imageId);
     }
 
+    private Member findMemberForLogin(MemberLoginCommand memberLoginCommand) {
+        return memberRepository.findMemberByEmail(memberLoginCommand.getEmail())
+                .orElseThrow(() -> new BusinessException(ErrorCode.LOGIN_FAILED));
+    }
+
     private void deleteImage(Member member, Long imageId) {
         member.makeImageNull();
         imageRepository.delete(imageId);
@@ -74,16 +87,16 @@ public class MemberCommandService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
-    private Long createAndSaveMember(MemberCreateCommand memberCreateCommand) {
-        Member member = createMember(memberCreateCommand);
-        if (!checkImageEmpty(memberCreateCommand)) {
-            member.putImage(createAndSaveMemberImage(memberCreateCommand.getImage()));
+    private Long createAndSaveMember(MemberRegisterCommand memberRegisterCommand) {
+        Member member = createMember(memberRegisterCommand);
+        if (!checkImageEmpty(memberRegisterCommand)) {
+            member.putImage(createAndSaveMemberImage(memberRegisterCommand.getImage()));
         }
         return saveMember(member);
     }
 
-    private boolean checkImageEmpty(MemberCreateCommand memberCreateCommand) {
-        return memberCreateCommand.getImage().isEmpty();
+    private boolean checkImageEmpty(MemberRegisterCommand memberRegisterCommand) {
+        return memberRegisterCommand.getImage().isEmpty();
     }
 
     private Long saveMember(Member member) {
@@ -94,19 +107,19 @@ public class MemberCommandService {
         return new MemberImage(fileManageService.uploadImage(file));
     }
 
-    private void verifyExistedMember(MemberCreateCommand memberCreateCommand) {
-        if (memberRepository.findMemberByPhoneNumber(memberCreateCommand.getPhoneNumber()).isPresent()) {
+    private void verifyExistedMember(MemberRegisterCommand memberRegisterCommand) {
+        if (memberRepository.findMemberByPhoneNumber(memberRegisterCommand.getPhoneNumber()).isPresent()) {
             throw new BusinessException(ErrorCode.EXISTED_MEMBER);
         }
     }
 
-    private Member createMember(MemberCreateCommand memberCreateCommand) {
+    private Member createMember(MemberRegisterCommand memberRegisterCommand) {
         return Member.builder()
-                .name(memberCreateCommand.getName())
-                .phoneNumber(memberCreateCommand.getPhoneNumber())
-                .nickname(memberCreateCommand.getNickname())
-                .email(memberCreateCommand.getEmail())
-                .password(memberCreateCommand.getPassword())
+                .name(memberRegisterCommand.getName())
+                .phoneNumber(memberRegisterCommand.getPhoneNumber())
+                .nickname(memberRegisterCommand.getNickname())
+                .email(memberRegisterCommand.getEmail())
+                .password(memberRegisterCommand.getPassword())
                 .build();
     }
 }

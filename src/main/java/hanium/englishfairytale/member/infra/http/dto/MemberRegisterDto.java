@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberCreateDto {
+public class MemberRegisterDto {
     @NotNull
     @Size(min = 2, max = 6)
     private String name;

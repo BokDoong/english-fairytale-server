@@ -21,6 +21,14 @@ public class MemberJpaRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList();
+        return members.stream().findAny();
+    }
+
+    @Override
     public Optional<Member> findMemberByPhoneNumber(String phoneNumber) {
         List<Member> members = em.createQuery("select m from Member m where m.phoneNumber = :phoneNumber", Member.class)
                 .setParameter("phoneNumber", phoneNumber)

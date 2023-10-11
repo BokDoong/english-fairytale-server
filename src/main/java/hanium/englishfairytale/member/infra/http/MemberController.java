@@ -3,7 +3,8 @@ package hanium.englishfairytale.member.infra.http;
 import hanium.englishfairytale.member.application.MemberCommandService;
 import hanium.englishfairytale.member.application.MemberQueryService;
 import hanium.englishfairytale.member.application.dto.*;
-import hanium.englishfairytale.member.infra.http.dto.MemberCreateDto;
+import hanium.englishfairytale.member.infra.http.dto.MemberLoginDto;
+import hanium.englishfairytale.member.infra.http.dto.MemberRegisterDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,14 @@ public class MemberController {
     private final MemberDtoConverter converter;
 
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@Validated @RequestPart MemberCreateDto memberCreateDto,
+    public ResponseEntity<Long> register(@Validated @RequestPart MemberRegisterDto memberRegisterDto,
                                          @RequestPart MultipartFile image) {
-        return new ResponseEntity<>(memberCommandService.register(toCreateCommand(memberCreateDto, image)), HttpStatus.OK);
+        return new ResponseEntity<>(memberCommandService.register(toCreateCommand(memberRegisterDto, image)), HttpStatus.OK);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<Long> login(@Validated @RequestBody MemberLoginDto memberLoginDto) {
+        return new ResponseEntity<>(memberCommandService.login(converter.toCommand(memberLoginDto)), HttpStatus.OK);
     }
 
     @PostMapping("/check")
@@ -62,8 +68,8 @@ public class MemberController {
         memberCommandService.deleteMemberImage(memberId);
     }
 
-    private MemberCreateCommand toCreateCommand(MemberCreateDto memberCreateDto, MultipartFile image) {
-        return converter.toCommand(memberCreateDto, image);
+    private MemberRegisterCommand toCreateCommand(MemberRegisterDto memberRegisterDto, MultipartFile image) {
+        return converter.toCommand(memberRegisterDto, image);
     }
 
     private MemberUpdatePasswordCommand toPasswordUpdateCommand(MemberUpdatePasswordDto updatePasswordDto) {

@@ -54,11 +54,11 @@ public class TaleCommandService {
     public void deleteTaleImage(Long taleId, String imageStatus) {
         Tale tale = findTale(taleId);
         Long imageId = findTaleImageId(tale);
-        deleteImage(imageId);
+        deleteTaleImage(imageId);
         tale.putBasicImage(imageStatus);
     }
 
-    private void deleteImage(Long imageId) {
+    private void deleteTaleImage(Long imageId) {
         imageRepository.delete(imageId);
     }
 

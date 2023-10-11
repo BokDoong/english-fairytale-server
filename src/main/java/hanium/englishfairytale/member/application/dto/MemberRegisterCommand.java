@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
-public class MemberCreateCommand {
+public class MemberRegisterCommand {
     private String name;
     private String phoneNumber;
     private String nickname;

@@ -2,6 +2,7 @@ package hanium.englishfairytale.member.domain;
 
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
+import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -86,5 +88,11 @@ public class Member {
 
     public void makeImageNull() {
         this.image = null;
+    }
+
+    public void verifyCorrectPassword(MemberLoginCommand memberLoginCommand) {
+        if (!Objects.equals(password, memberLoginCommand.getPassword())) {
+            throw new BusinessException(ErrorCode.LOGIN_FAILED);
+        }
     }
 }

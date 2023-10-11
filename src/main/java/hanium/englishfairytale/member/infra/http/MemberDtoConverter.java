@@ -1,17 +1,19 @@
 package hanium.englishfairytale.member.infra.http;
 
-import hanium.englishfairytale.member.application.dto.MemberCreateCommand;
+import hanium.englishfairytale.member.application.dto.MemberRegisterCommand;
 import hanium.englishfairytale.member.application.dto.MemberImageUpdateCommand;
 import hanium.englishfairytale.member.application.dto.MemberUpdatePasswordCommand;
-import hanium.englishfairytale.member.infra.http.dto.MemberCreateDto;
+import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
+import hanium.englishfairytale.member.infra.http.dto.MemberLoginDto;
+import hanium.englishfairytale.member.infra.http.dto.MemberRegisterDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class MemberDtoConverter {
-    public MemberCreateCommand toCommand(MemberCreateDto dto, MultipartFile image) {
-        return MemberCreateCommand.builder()
+    public MemberRegisterCommand toCommand(MemberRegisterDto dto, MultipartFile image) {
+        return MemberRegisterCommand.builder()
                 .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())
                 .nickname(dto.getNickname())
@@ -32,6 +34,13 @@ public class MemberDtoConverter {
         return MemberImageUpdateCommand.builder()
                 .memberId(id)
                 .image(image)
+                .build();
+    }
+
+    public MemberLoginCommand toCommand(MemberLoginDto dto) {
+        return MemberLoginCommand.builder()
+                .email(dto.getEmail())
+                .password(dto.getPassword())
                 .build();
     }
 }

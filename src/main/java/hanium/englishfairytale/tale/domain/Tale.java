@@ -47,7 +47,7 @@ public class Tale {
     }
 
     public String getMemberName() {
-        return this.member.getName();
+        return member.getName();
     }
 
     public void putImage(TaleImage taleImage) {
@@ -55,7 +55,7 @@ public class Tale {
     }
 
     public void addTaleKeyword(TaleKeyword newTaleKeyword) {
-        this.taleKeywords.add(newTaleKeyword);
+        taleKeywords.add(newTaleKeyword);
     }
 
     public void updateTaleImage(TaleImage taleImage) {
@@ -64,7 +64,7 @@ public class Tale {
     }
 
     public void putBasicImage(String imageStatus) {
-        this.image = new Image(ImageStatus.of(imageStatus));
+        image = new Image(ImageStatus.of(imageStatus));
     }
 
     public void checkImageEmpty() {
@@ -74,7 +74,7 @@ public class Tale {
     }
 
     public Long getImageId() {
-        return this.image.getTaleImage().getId();
+        return image.getTaleImage().getId();
     }
 
     public String getImageStatus() {
