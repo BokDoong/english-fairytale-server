@@ -1,8 +1,10 @@
 package hanium.englishfairytale.tale.domain;
 
-import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
+import lombok.Getter;
 
+@Getter
 public enum ImageStatus {
     CUSTOMIZED("사용자 지정 이미지"),
     BASIC_FIRST("기본 이미지1"),
@@ -26,10 +28,6 @@ public enum ImageStatus {
                 return is;
             }
         }
-        throw new BusinessException(ErrorCode.IMAGE_STATUS_NOT_FOUND);
-    }
-
-    public String getStatus() {
-        return this.status;
+        throw new NotFoundException(ErrorCode.IMAGE_STATUS_NOT_FOUND);
     }
 }
