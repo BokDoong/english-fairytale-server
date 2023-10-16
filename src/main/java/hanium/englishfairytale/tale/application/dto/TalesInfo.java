@@ -14,11 +14,16 @@ public class TalesInfo {
 
     private Long taleId;
     private String title;
+    private String imgUrl;
+    private String imgStatus;
     private List<String> keywords;
 
     public TalesInfo(Tale tale, List<Keyword> keywordList) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
+        this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
+        this.imgStatus = tale.getImageStatus();
+
         keywords = new ArrayList<>();
         for (Keyword keyword : keywordList) {
             keywords.add(keyword.getWord());

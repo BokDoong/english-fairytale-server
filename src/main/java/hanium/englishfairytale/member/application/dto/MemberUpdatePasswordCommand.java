@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberUpdatePasswordCommand {
     Long memberId;
-    String password;
+    String originalPassword;
+    String newPassword;
 }

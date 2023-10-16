@@ -37,6 +37,7 @@ public enum ErrorCode {
     DUPLICATED_NICKNAME(MemberCode.NICKNAME_DUPLICATED.getCode(), CONFLICT, "동일한 닉네임이 존재하는 경우"),
     MEMBER_IMAGE_NON_EXISTED(MemberCode.NON_EXISTED_IMAGE.getCode(), CONFLICT, "삭제할 이미지가 존재하지 않는 경우"),
     LOGIN_FAILED(MemberCode.FAILED_LOGIN.getCode(), NOT_FOUND, "아이디 또는 비밀번호가 일치하지 않는 경우"),
+    INVALID_PASSWORD(MemberCode.INVALID_PASSWORD.getCode(), BAD_REQUEST, "기존의 비밀번호와 일치하지 않는 경우"),
 
     // NOTICE
     ANNOUNCE_NOT_FOUND(AnnouncementCode.ANNOUNCEMENT_NOT_FOUND.getCode(), NOT_FOUND, "DB에 해당 Announcement의 데이터가 존재하지 않는 경우"),

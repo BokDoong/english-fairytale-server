@@ -34,7 +34,7 @@ public class MemberCommandService {
     @Transactional
     public Long login(MemberLoginCommand memberLoginCommand) {
         Member member = findMemberForLogin(memberLoginCommand);
-        member.verifyCorrectPassword(memberLoginCommand);
+        member.verifyMemberEmailAndPassword(memberLoginCommand);
         return member.getId();
     }
 
@@ -47,7 +47,8 @@ public class MemberCommandService {
     @Transactional
     public void updatePassword(MemberUpdatePasswordCommand updatePasswordCommand) {
         Member member = findMember(updatePasswordCommand.getMemberId());
-        member.updatePassword(updatePasswordCommand.getPassword());
+        member.verifyMemberPassword(updatePasswordCommand.getOriginalPassword());
+        member.updatePassword(updatePasswordCommand.getNewPassword());
     }
 
     @Transactional

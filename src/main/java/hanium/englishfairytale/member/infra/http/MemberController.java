@@ -53,9 +53,9 @@ public class MemberController {
         memberCommandService.updateNickname(memberId, nickname);
     }
 
-    @PatchMapping("/password")
-    public void updatePassword(@Validated @RequestBody MemberUpdatePasswordDto updatePasswordDto) {
-        memberCommandService.updatePassword(toPasswordUpdateCommand(updatePasswordDto));
+    @PatchMapping("/password/{memberId}")
+    public void updatePassword(@PathVariable Long memberId ,@Validated @RequestBody MemberUpdatePasswordDto updatePasswordDto) {
+        memberCommandService.updatePassword(toPasswordUpdateCommand(memberId, updatePasswordDto));
     }
 
     @PatchMapping("/{memberId}/image")
@@ -72,8 +72,8 @@ public class MemberController {
         return converter.toCommand(memberRegisterDto, image);
     }
 
-    private MemberUpdatePasswordCommand toPasswordUpdateCommand(MemberUpdatePasswordDto updatePasswordDto) {
-        return converter.toCommand(updatePasswordDto);
+    private MemberUpdatePasswordCommand toPasswordUpdateCommand(Long memberId, MemberUpdatePasswordDto updatePasswordDto) {
+        return converter.toCommand(memberId, updatePasswordDto);
     }
 
     private MemberImageUpdateCommand toImageUpdateCommand(Long memberId, MultipartFile image) {
