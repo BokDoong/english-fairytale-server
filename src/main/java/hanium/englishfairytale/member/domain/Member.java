@@ -3,6 +3,7 @@ package hanium.englishfairytale.member.domain;
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
+import hanium.englishfairytale.member.application.dto.MemberUpdatePasswordCommand;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -90,9 +91,15 @@ public class Member {
         this.image = null;
     }
 
-    public void verifyCorrectPassword(MemberLoginCommand memberLoginCommand) {
-        if (!Objects.equals(password, memberLoginCommand.getPassword())) {
+    public void verifyMemberEmailAndPassword(MemberLoginCommand memberLoginCommand) {
+        if (!Objects.equals(password, memberLoginCommand.getPassword()) || !Objects.equals(email, memberLoginCommand.getEmail())) {
             throw new BusinessException(ErrorCode.LOGIN_FAILED);
+        }
+    }
+
+    public void verifyMemberPassword(String originalPassword) {
+        if (!Objects.equals(password, originalPassword)) {
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
     }
 }

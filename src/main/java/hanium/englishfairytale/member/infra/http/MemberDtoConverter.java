@@ -23,10 +23,11 @@ public class MemberDtoConverter {
                 .build();
     }
 
-    public MemberUpdatePasswordCommand toCommand(MemberUpdatePasswordDto dto) {
+    public MemberUpdatePasswordCommand toCommand(Long memberId, MemberUpdatePasswordDto dto) {
         return MemberUpdatePasswordCommand.builder()
-                .memberId(dto.getMemberId())
-                .password(dto.getPassword())
+                .memberId(memberId)
+                .originalPassword(dto.getOriginalPassword())
+                .newPassword(dto.getNewPassword())
                 .build();
     }
 

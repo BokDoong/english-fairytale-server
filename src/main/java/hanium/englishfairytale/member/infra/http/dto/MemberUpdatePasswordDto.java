@@ -12,8 +12,9 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class MemberUpdatePasswordDto {
     @NotNull
-    private Long memberId;
+    @Pattern(regexp = "^(?i)(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{2,10}$")
+    private String originalPassword;
     @NotNull
     @Pattern(regexp = "^(?i)(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{2,10}$")
-    private String password;
+    private String newPassword;
 }
