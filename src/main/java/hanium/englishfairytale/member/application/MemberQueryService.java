@@ -46,7 +46,7 @@ public class MemberQueryService {
     }
 
     private void verifyNicknameDuplicated(String nickName) {
-        if (memberRepository.findByMemberNickname(nickName).isPresent()) {
+        if (memberRepository.findMemberByNickname(nickName).isPresent()) {
             throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
         }
     }

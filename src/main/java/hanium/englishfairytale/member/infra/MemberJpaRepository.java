@@ -37,7 +37,7 @@ public class MemberJpaRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByMemberNickname(String nickName) {
+    public Optional<Member> findMemberByNickname(String nickName) {
         List<Member> members = em.createQuery("select m from Member m where m.nickname = :nickName", Member.class)
                 .setParameter("nickName", nickName)
                 .getResultList();
