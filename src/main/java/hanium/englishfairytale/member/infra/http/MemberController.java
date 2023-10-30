@@ -7,8 +7,6 @@ import hanium.englishfairytale.member.infra.http.dto.MemberLoginDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberRegisterDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,14 +21,14 @@ public class MemberController {
     private final MemberDtoConverter converter;
 
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@Validated @RequestPart MemberRegisterDto memberRegisterDto,
+    public Long register(@Validated @RequestPart MemberRegisterDto memberRegisterDto,
                                          @RequestPart MultipartFile image) {
-        return new ResponseEntity<>(memberCommandService.register(toCreateCommand(memberRegisterDto, image)), HttpStatus.OK);
+        return memberCommandService.register(toCreateCommand(memberRegisterDto, image));
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Long> login(@Validated @RequestBody MemberLoginDto memberLoginDto) {
-        return new ResponseEntity<>(memberCommandService.login(converter.toCommand(memberLoginDto)), HttpStatus.OK);
+    public Long login(@Validated @RequestBody MemberLoginDto memberLoginDto) {
+        return memberCommandService.login(converter.toCommand(memberLoginDto));
     }
 
     @PostMapping("/check")
@@ -39,13 +37,13 @@ public class MemberController {
     }
 
     @GetMapping("{memberId}")
-    public ResponseEntity<MemberInfo> findMemberInfo(@PathVariable Long memberId) {
-        return new ResponseEntity<>(memberQueryService.findMemberInfo(memberId), HttpStatus.OK);
+    public MemberInfo findMemberInfo(@PathVariable Long memberId) {
+        return memberQueryService.findMemberInfo(memberId);
     }
 
     @GetMapping("{memberId}/detail")
-    public ResponseEntity<MemberDetailInfo> findMemberDetailInfo(@PathVariable Long memberId) {
-        return new ResponseEntity<>(memberQueryService.findMemberDetailInfo(memberId), HttpStatus.OK);
+    public MemberDetailInfo findMemberDetailInfo(@PathVariable Long memberId) {
+        return memberQueryService.findMemberDetailInfo(memberId);
     }
 
     @PatchMapping("/nickname")

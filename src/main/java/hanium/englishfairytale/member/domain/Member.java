@@ -3,7 +3,6 @@ package hanium.englishfairytale.member.domain;
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
-import hanium.englishfairytale.member.application.dto.MemberUpdatePasswordCommand;
 import hanium.englishfairytale.post.domain.Likes;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;

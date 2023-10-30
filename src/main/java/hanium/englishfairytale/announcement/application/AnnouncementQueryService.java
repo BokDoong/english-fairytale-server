@@ -39,5 +39,4 @@ public class AnnouncementQueryService {
     private List<AnnouncementResponse> convertToAnnouncementResponse(List<Announcement> announcements) {
         return announcements.stream().map(AnnouncementResponse::new).collect(Collectors.toList());
     }
-
 }

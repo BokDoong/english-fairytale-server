@@ -6,8 +6,6 @@ import hanium.englishfairytale.tale.application.TaleCommandService;
 import hanium.englishfairytale.tale.infra.http.dto.TaleCreateDto;
 import hanium.englishfairytale.tale.infra.http.dto.TaleDtoConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,24 +22,24 @@ public class TaleController {
     private final TaleDtoConverter converter;
 
     @PostMapping("create")
-    public ResponseEntity<TaleCreateResponse> create(@Validated @RequestPart TaleCreateDto taleCreateDto,
+    public TaleCreateResponse create(@Validated @RequestPart TaleCreateDto taleCreateDto,
                                                      @RequestPart MultipartFile image) {
-        return new ResponseEntity<>(taleCommandService.create(toCreateCommand(taleCreateDto, image)), HttpStatus.OK);
+        return taleCommandService.create(toCreateCommand(taleCreateDto, image));
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<TalesInfo>> findRecentTales(@RequestParam Long memberId) {
-        return new ResponseEntity<>(taleQueryService.findRecentTales(memberId), HttpStatus.OK);
+    public List<TalesInfo> findRecentTales(@RequestParam Long memberId) {
+        return taleQueryService.findRecentTales(memberId);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<TalesInfo>> findAllTales(@RequestParam Long memberId, @RequestParam int offset) {
-        return new ResponseEntity<>(taleQueryService.findAllTales(memberId, offset), HttpStatus.OK);
+    public List<TalesInfo> findAllTales(@RequestParam Long memberId, @RequestParam int offset) {
+        return taleQueryService.findAllTales(memberId, offset);
     }
 
     @GetMapping("/{taleId}/detail")
-    public ResponseEntity<TaleDetailInfo> findDetailTale(@PathVariable Long taleId) {
-        return new ResponseEntity<>(taleQueryService.findDetailTale(taleId), HttpStatus.OK);
+    public TaleDetailInfo findDetailTale(@PathVariable Long taleId) {
+        return taleQueryService.findDetailTale(taleId);
     }
 
     @DeleteMapping("/{taleId}")
