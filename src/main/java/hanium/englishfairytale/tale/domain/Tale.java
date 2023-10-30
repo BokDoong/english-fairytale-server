@@ -3,6 +3,7 @@ package hanium.englishfairytale.tale.domain;
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
+import hanium.englishfairytale.post.domain.Post;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +32,8 @@ public class Tale {
 
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
+    @OneToOne(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -44,6 +47,16 @@ public class Tale {
         this.createdTime = LocalDateTime.now();
         this.member = member;
         member.addTale(this);
+    }
+
+    public void verifyPostAlreadyExisted() {
+        if (post != null) {
+            throw new BusinessException(ErrorCode.EXISTED_POST);
+        }
+    }
+
+    public void addPost(Post post) {
+        this.post = post;
     }
 
     public String getMemberName() {

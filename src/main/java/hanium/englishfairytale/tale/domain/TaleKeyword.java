@@ -1,6 +1,7 @@
 package hanium.englishfairytale.tale.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,22 +24,30 @@ public class TaleKeyword {
     @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
-    public static TaleKeyword createTaleKeyword(Tale tale, Keyword keyword) {
-        TaleKeyword taleKeyword = new TaleKeyword();
-        taleKeyword.setTale(tale);
-        taleKeyword.setKeyword(keyword);
-
-        return taleKeyword;
+    @Builder
+    public TaleKeyword(Tale tale, Keyword keyword) {
+        this.tale = tale;
+        this.keyword = keyword;
+        tale.addTaleKeyword(this);
+        keyword.addTaleKeyword(this);
     }
 
-    private void setTale(Tale newTale) {
-        this.tale = newTale;
-        newTale.addTaleKeyword(this);
-    }
-
-    private void setKeyword(Keyword newKeyword) {
-        keyword = newKeyword;
-        newKeyword.addTaleKeyword(this);
-    }
+//    public static TaleKeyword createTaleKeyword(Tale tale, Keyword keyword) {
+//        TaleKeyword taleKeyword = new TaleKeyword();
+//        taleKeyword.setTale(tale);
+//        taleKeyword.setKeyword(keyword);
+//
+//        return taleKeyword;
+//    }
+//
+//    private void setTale(Tale newTale) {
+//        this.tale = newTale;
+//        newTale.addTaleKeyword(this);
+//    }
+//
+//    private void setKeyword(Keyword newKeyword) {
+//        keyword = newKeyword;
+//        newKeyword.addTaleKeyword(this);
+//    }
 
 }

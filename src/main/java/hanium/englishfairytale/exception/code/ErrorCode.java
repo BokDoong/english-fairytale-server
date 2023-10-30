@@ -41,7 +41,12 @@ public enum ErrorCode {
 
     // NOTICE
     ANNOUNCE_NOT_FOUND(AnnouncementCode.ANNOUNCEMENT_NOT_FOUND.getCode(), NOT_FOUND, "DB에 해당 Announcement의 데이터가 존재하지 않는 경우"),
-    ANNOUNCEMENT_TYPE_NOT_FOUND(AnnouncementCode.NON_ANNOUNCEMENT_TYPE.getCode(), NOT_FOUND, "일치하는 AnnouncementType이 없는 경우")
+    ANNOUNCEMENT_TYPE_NOT_FOUND(AnnouncementCode.NON_ANNOUNCEMENT_TYPE.getCode(), NOT_FOUND, "일치하는 AnnouncementType이 없는 경우"),
+
+    // COMMUNITY
+    POST_NOT_FOUND(CommunityCode.POST_NOT_FOUND.getCode(), NOT_FOUND, "존재하지 않는 게시글"),
+    EXISTED_POST(CommunityCode.EXISTED_POST.getCode(), CONFLICT, "해당 동화에 대한 게시글이 이미 존재할 때"),
+
     ;
 
     private final String code;

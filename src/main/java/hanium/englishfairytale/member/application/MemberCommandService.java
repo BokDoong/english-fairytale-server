@@ -112,6 +112,9 @@ public class MemberCommandService {
         if (memberRepository.findMemberByPhoneNumber(memberRegisterCommand.getPhoneNumber()).isPresent()) {
             throw new BusinessException(ErrorCode.EXISTED_MEMBER);
         }
+        if (memberRepository.findMemberByEmail(memberRegisterCommand.getEmail()).isPresent()) {
+            throw new BusinessException(ErrorCode.EXISTED_MEMBER);
+        }
     }
 
     private Member createMember(MemberRegisterCommand memberRegisterCommand) {

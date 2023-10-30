@@ -10,7 +10,7 @@ public interface MemberRepository {
 
     Optional<Member> findMemberByPhoneNumber(String phoneNumber);
 
-    Optional<Member> findByMemberNickname(String nickName);
+    Optional<Member> findMemberByNickname(String nickName);
 
     Long save(Member member);
 }
