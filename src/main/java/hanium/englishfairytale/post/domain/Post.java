@@ -3,6 +3,7 @@ package hanium.englishfairytale.post.domain;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,12 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
+
+    @Builder
+    public Post(Member member, Tale tale) {
+        this.createdTime = LocalDateTime.now();
+        this.member = member;
+        this.tale = tale;
+        tale.addPost(this);
+    }
 }

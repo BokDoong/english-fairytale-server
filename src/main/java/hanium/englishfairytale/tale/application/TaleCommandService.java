@@ -113,8 +113,15 @@ public class TaleCommandService {
 
     private void saveTaleKeywords(Tale tale, List<Keyword> keywords) {
         for(Keyword keyword: keywords) {
-            taleRepository.save(TaleKeyword.createTaleKeyword(tale, keyword));
+            taleRepository.save(createTaleKeyword(tale, keyword));
         }
+    }
+
+    private TaleKeyword createTaleKeyword(Tale tale, Keyword keyword) {
+        return TaleKeyword.builder()
+                .keyword(keyword)
+                .tale(tale)
+                .build();
     }
 
     private TaleImage createAndSaveTaleImage(MultipartFile image) {

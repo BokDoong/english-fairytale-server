@@ -4,6 +4,7 @@ import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
 import hanium.englishfairytale.post.domain.Likes;
+import hanium.englishfairytale.post.domain.Post;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,7 +54,7 @@ public class Member {
         this.password = password;
         this.createdTime = LocalDateTime.now();
         this.image = new Image();
-        this.tales = new ArrayList<>();
+        //this.tales = new ArrayList<>();
     }
 
     public void addTale(Tale newTale) {

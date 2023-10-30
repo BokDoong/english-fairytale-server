@@ -32,7 +32,7 @@ public class Tale {
 
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
-    @OneToOne(mappedBy = "tale", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -47,6 +47,16 @@ public class Tale {
         this.createdTime = LocalDateTime.now();
         this.member = member;
         member.addTale(this);
+    }
+
+    public void verifyPostAlreadyExisted() {
+        if (post != null) {
+            throw new BusinessException(ErrorCode.EXISTED_POST);
+        }
+    }
+
+    public void addPost(Post post) {
+        this.post = post;
     }
 
     public String getMemberName() {
