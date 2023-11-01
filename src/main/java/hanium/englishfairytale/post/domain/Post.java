@@ -1,43 +1,73 @@
 package hanium.englishfairytale.post.domain;
 
-import hanium.englishfairytale.member.domain.Member;
+import hanium.englishfairytale.exception.BusinessException;
+import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.tale.domain.Tale;
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 @Getter
 public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "created_date")
-    private LocalDateTime createdTime;
+    @Enumerated(EnumType.STRING)
+    private PostStatus postStatus;
+    @Column(name = "posted_date")
+    private LocalDateTime postedTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tale_id")
-    private Tale tale;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
-    @Builder
-    public Post(Member member, Tale tale) {
-        this.createdTime = LocalDateTime.now();
-        this.member = member;
-        this.tale = tale;
-        tale.addPost(this);
+    public Post() {
+        this.postStatus = PostStatus.NOT_POSTED;
+        this.postedTime = LocalDateTime.now();
+    }
+
+    public void verifyAlreadyPosted() {
+        if (postStatus == PostStatus.POSTED) {
+            throw new BusinessException(ErrorCode.EXISTED_POST);
+        }
+    }
+
+    public void updatePostStatus() {
+        if (postStatus == PostStatus.NOT_POSTED) {
+            postStatus = PostStatus.POSTED;
+        } else {
+            postStatus = PostStatus.NOT_POSTED;
+        }
+    }
+
+    public void verifyNotExited() {
+        if (postStatus == PostStatus.NOT_POSTED) {
+            throw new BusinessException(ErrorCode.POST_NOT_FOUND);
+        }
+    }
+
+    public boolean updateLikeStatus(Long memberId, Tale tale) {
+        boolean liked = verifyAlreadyLiked(memberId);
+        if (liked) {
+            likes.removeIf(like -> (like.getMemberId().equals(memberId)));
+            return false;
+        } else {
+            Likes like = new Likes(memberId);
+            like.setPost(tale);
+            likes.add(like);
+            return true;
+        }
+    }
+
+    public boolean verifyAlreadyLiked(Long memberId) {
+        return likes.stream()
+                .anyMatch(like -> like.getMemberId().equals(memberId));
+    }
+
+    public int getLikeCounts() {
+        return likes.size();
+    }
+
+    public void updatePostDate() {
+        postedTime = LocalDateTime.now();
     }
 }

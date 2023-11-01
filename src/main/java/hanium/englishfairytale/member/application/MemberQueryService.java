@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberQueryService {
@@ -23,7 +25,9 @@ public class MemberQueryService {
 
     @Transactional
     public void verifyNickname(String nickname) {
-        verifyNicknameDuplicated(nickname);
+        if (findMemberByNickname(nickname).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
+        }
     }
 
     @Transactional
@@ -36,6 +40,10 @@ public class MemberQueryService {
         return new MemberDetailInfo(findMember(memberId));
     }
 
+    private Optional<Member> findMemberByNickname(String nickname) {
+        return memberRepository.findMemberByNickname(nickname);
+    }
+
     private Member findMember(Long memberId) {
         return memberQueryDao.findMemberAndImage(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
@@ -43,11 +51,5 @@ public class MemberQueryService {
 
     private Long countTales(Long memberId) {
         return taleQueryDao.countTales(memberId);
-    }
-
-    private void verifyNicknameDuplicated(String nickName) {
-        if (memberRepository.findMemberByNickname(nickName).isPresent()) {
-            throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
-        }
     }
 }

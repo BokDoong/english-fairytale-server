@@ -1,10 +1,8 @@
 package hanium.englishfairytale.post.application;
 
+import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
-import hanium.englishfairytale.member.domain.Member;
-import hanium.englishfairytale.member.infra.MemberQueryDao;
-import hanium.englishfairytale.post.domain.Post;
 import hanium.englishfairytale.post.domain.PostRepository;
 import hanium.englishfairytale.tale.domain.Tale;
 import hanium.englishfairytale.tale.infra.TaleQueryDao;
@@ -16,33 +14,44 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostCommandService {
 
-    private final MemberQueryDao memberQueryDao;
-    private final TaleQueryDao taleQueryDao;
     private final PostRepository postRepository;
+    private final TaleQueryDao taleQueryDao;
 
     @Transactional
-    public Long create(Long memberId, Long taleId) {
-        Member member = findMemberById(memberId);
-        Tale tale = findTaleById(taleId);
+    public void post(Long taleId) {
+        Tale tale = findTale(taleId);
+        postTale(tale);
+    }
+
+    @Transactional
+    public void postTale(Tale tale) {
         tale.verifyPostAlreadyExisted();
-        return createAndSavePost(tale, member);
+        tale.posting();
     }
 
-    private Long createAndSavePost(Tale tale, Member member) {
-        Post post = Post.builder()
-                .member(member).tale(tale).build();
-
-        postRepository.save(post);
-        return post.getId();
+    @Transactional
+    public void deletePost(Long taleId) {
+        Tale tale = findTale(taleId);
+        tale.verifyPostNotExisted();
+        tale.deletePosting();
     }
 
-    private Tale findTaleById(Long taleId) {
+    @Transactional
+    public boolean updateLikes(Long memberId, Long taleId) {
+        Tale tale = findTaleWithLikes(taleId);
+        tale.verifyPostNotExisted();
+        return tale.updateLike(memberId);
+    }
+
+    private Tale findTaleWithLikes(Long taleId) {
+        return postRepository.findTaleWithLikes(taleId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TALE_NOT_FOUND));
+    }
+
+    private Tale findTale(Long taleId) {
         return taleQueryDao.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
-    private Member findMemberById(Long memberId) {
-        return memberQueryDao.findMemberAndImage(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
-    }
+
 }

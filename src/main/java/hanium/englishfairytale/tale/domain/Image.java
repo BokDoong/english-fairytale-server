@@ -10,12 +10,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Image {
+    @Enumerated(EnumType.STRING)
+    private ImageStatus imageStatus;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="taleImage_id")
     private TaleImage taleImage;
-
-    @Enumerated(EnumType.STRING)
-    private ImageStatus imageStatus;
 
     public Image(ImageStatus imageStatus) {
         this.imageStatus = imageStatus;

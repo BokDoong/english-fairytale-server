@@ -3,6 +3,7 @@ package hanium.englishfairytale.tale.domain;
 import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
+import hanium.englishfairytale.post.application.dto.PostedTalesInfo;
 import hanium.englishfairytale.post.domain.Post;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,13 +29,13 @@ public class Tale {
     private String korTale;
     @Embedded
     private Image image;
+    @Embedded
+    private Post post;
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaleKeyword> taleKeywords = new ArrayList<>();
-    @OneToOne(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -46,17 +48,22 @@ public class Tale {
         this.image = new Image(imageStatus);
         this.createdTime = LocalDateTime.now();
         this.member = member;
+        this.post = new Post();
         member.addTale(this);
     }
 
-    public void verifyPostAlreadyExisted() {
-        if (post != null) {
-            throw new BusinessException(ErrorCode.EXISTED_POST);
-        }
+    public static List<Long> toTaleIds(List<PostedTalesInfo> postedTalesInfos) {
+        return postedTalesInfos.stream()
+                .map(PostedTalesInfo::getTaleId)
+                .collect(Collectors.toList());
     }
 
-    public void addPost(Post post) {
-        this.post = post;
+    public boolean updateLike(Long memberId) {
+        return post.updateLikeStatus(memberId, this);
+    }
+
+    public void verifyPostAlreadyExisted() {
+        post.verifyAlreadyPosted();
     }
 
     public String getMemberName() {
@@ -92,5 +99,21 @@ public class Tale {
 
     public String getImageStatus() {
         return image.getImageStatus().getStatus();
+    }
+
+    public void posting() {
+        post.updatePostStatus();
+        post.updatePostDate();
+    }
+    public void deletePosting() {
+        post.updatePostStatus();
+    }
+
+    public void verifyPostNotExisted() {
+        post.verifyNotExited();
+    }
+
+    public int countLikes() {
+        return post.getLikeCounts();
     }
 }

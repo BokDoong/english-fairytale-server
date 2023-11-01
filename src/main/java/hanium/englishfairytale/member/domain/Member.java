@@ -4,7 +4,6 @@ import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.application.dto.MemberLoginCommand;
 import hanium.englishfairytale.post.domain.Likes;
-import hanium.englishfairytale.post.domain.Post;
 import hanium.englishfairytale.tale.domain.Tale;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,8 +41,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Tale> tales = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Likes> likes = new ArrayList<>();
 
     @Builder
     public Member(String name, String phoneNumber, String nickname, String email, String password) {
@@ -54,7 +51,6 @@ public class Member {
         this.password = password;
         this.createdTime = LocalDateTime.now();
         this.image = new Image();
-        //this.tales = new ArrayList<>();
     }
 
     public void addTale(Tale newTale) {

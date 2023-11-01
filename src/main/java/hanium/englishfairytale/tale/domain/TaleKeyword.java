@@ -32,22 +32,4 @@ public class TaleKeyword {
         keyword.addTaleKeyword(this);
     }
 
-//    public static TaleKeyword createTaleKeyword(Tale tale, Keyword keyword) {
-//        TaleKeyword taleKeyword = new TaleKeyword();
-//        taleKeyword.setTale(tale);
-//        taleKeyword.setKeyword(keyword);
-//
-//        return taleKeyword;
-//    }
-//
-//    private void setTale(Tale newTale) {
-//        this.tale = newTale;
-//        newTale.addTaleKeyword(this);
-//    }
-//
-//    private void setKeyword(Keyword newKeyword) {
-//        keyword = newKeyword;
-//        newKeyword.addTaleKeyword(this);
-//    }
-
 }
