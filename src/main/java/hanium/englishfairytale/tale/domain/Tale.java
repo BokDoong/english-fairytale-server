@@ -10,6 +10,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,12 @@ public class Tale {
         this.member = member;
         this.post = new Post();
         member.addTale(this);
+    }
+
+    public static List<PostedTalesInfo> sortPostedTalesByLikes(List<PostedTalesInfo> postedTalesInfo) {
+        postedTalesInfo.sort(Comparator.comparingInt(PostedTalesInfo::getLikeCounts));
+        Collections.reverse(postedTalesInfo);
+        return postedTalesInfo;
     }
 
     public static List<Long> toTaleIds(List<PostedTalesInfo> postedTalesInfos) {

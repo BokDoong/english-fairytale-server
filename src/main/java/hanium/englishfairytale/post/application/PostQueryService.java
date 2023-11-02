@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,18 +25,16 @@ public class PostQueryService {
 
     @Transactional
     public List<PostedTalesInfo> findPostsByLikes(int offset) {
-        // 1.포스팅된 동화들 조회
+        // 포스팅된 동화들 조회
         List<PostedTalesInfo> postedTalesInfos = findPostedTales(offset);
-        // 2.각 동화별로 좋아요까지 조회
+        // 좋아요 조회 및 동화별로 그루핑
         Map<Long, List<PostLikesQueryDto>> postLikesMap = findPostLikesMap(postedTalesInfos);
-        // 3.각 동화별로 좋아요수를 꼽아줌
+        // 좋아요수 꼽아줌
         postedTalesInfos.forEach(info -> info.setLikeCounts((postLikesMap.get(info.getTaleId()) == null) ? 0 : postLikesMap.get(info.getTaleId()).size()));
-        // 4.키워드 꼽아줌
+        // 키워드 찾아서 꼽아줌
         postedTalesInfos.forEach(info -> info.setKeywordContents(taleQueryDao.findKeywordByTaleId(info.getTaleId())));
-        // 5.좋아요순 정렬
-        postedTalesInfos.sort(Comparator.comparingInt(PostedTalesInfo::getLikeCounts));
-        Collections.reverse(postedTalesInfos);
-        return postedTalesInfos;
+        // 좋아요순 정렬
+        return Tale.sortPostedTalesByLikes(postedTalesInfos);
     }
 
     @Transactional
