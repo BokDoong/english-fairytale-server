@@ -1,6 +1,5 @@
 package hanium.englishfairytale.post.application;
 
-import hanium.englishfairytale.common.util.PostSorter;
 import hanium.englishfairytale.post.application.dto.PostedTalesInfo;
 import hanium.englishfairytale.post.domain.PostRepository;
 import hanium.englishfairytale.post.infra.PostQueryDao;
@@ -12,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,7 +36,8 @@ public class PostQueryService {
         // 4.키워드 꼽아줌
         postedTalesInfos.forEach(info -> info.setKeywordContents(taleQueryDao.findKeywordByTaleId(info.getTaleId())));
         // 5.좋아요순 정렬
-
+        postedTalesInfos.sort(Comparator.comparingInt(PostedTalesInfo::getLikeCounts));
+        Collections.reverse(postedTalesInfos);
         return postedTalesInfos;
     }
 
