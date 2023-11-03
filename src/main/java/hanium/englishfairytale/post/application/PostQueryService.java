@@ -23,10 +23,11 @@ public class PostQueryService {
     private final PostRepository postRepository;
     private final PostQueryDao postQueryDao;
 
+    // TODO: 단일책임원칙 고려한 refactoring 필요
     @Transactional
-    public List<PostedTalesInfo> findPostsByLikes(int offset) {
+    public List<PostedTalesInfo> findPostsByLikes(int offset, Long memberId) {
         // 포스팅된 동화들 조회
-        List<PostedTalesInfo> postedTalesInfos = findPostedTales(offset);
+        List<PostedTalesInfo> postedTalesInfos = findPostedTaleInfos(offset, memberId);
         // 좋아요 조회 및 동화별로 그루핑
         Map<Long, List<PostLikesQueryDto>> postLikesMap = findPostLikesMap(postedTalesInfos);
         // 좋아요수 꼽아줌
@@ -37,18 +38,40 @@ public class PostQueryService {
         return Tale.sortPostedTalesByLikes(postedTalesInfos);
     }
 
+    // TODO: 키워드 조회 쿼리 최적화
     @Transactional
-    public List<PostedTalesInfo> findPostsByDate(int offset) {
+    public List<PostedTalesInfo> findPostsByDate(int offset, Long memberId) {
         List<Tale> tales = findPostsSortedByDate(offset);
+        return convertPostsToPostInfosWithMemberId(tales, memberId);
+    }
+
+    @Transactional
+    public List<PostedTalesInfo> findPostsForMyPage(int offset, Long memberId) {
+        List<Tale> tales = findPostedTalesByMemberId(offset, memberId);
+        return convertPostsToPostInfosWithMemberId(tales, memberId);
+    }
+
+    @Transactional
+    public List<PostedTalesInfo> findLikedPostsForMyPage(int offset, Long memberId) {
+        List<Tale> tales = findLikesPostedTalesByMemberId(offset, memberId);
         return convertPostsToPostInfos(tales);
+    }
+
+    private List<Tale> findLikesPostedTalesByMemberId(int offset, Long memberId) {
+        return postRepository.findLikedPostedTalesByMemberId(memberId, offset, 20);
+    }
+
+    private List<Tale> findPostedTalesByMemberId(int offset, Long memberId) {
+        return postRepository.findPostedTaleListByMemberId(memberId, offset, 20);
     }
 
     private Map<Long, List<PostLikesQueryDto>> findPostLikesMap(List<PostedTalesInfo> postedTalesInfos) {
         return postQueryDao.findPostLikesMap(Tale.toTaleIds(postedTalesInfos));
     }
 
-    private List<PostedTalesInfo> findPostedTales(int offset) {
-        return postQueryDao.findPostedTales(offset, 20);
+    private List<PostedTalesInfo> findPostedTaleInfos(int offset, Long memberId) {
+        List<Tale> tales = postRepository.findPostedTaleListWithLikes(offset);
+        return Tale.toTalesInfo(tales, memberId);
     }
 
     private List<Tale> findPostsSortedByDate(int offset) {
@@ -57,7 +80,13 @@ public class PostQueryService {
 
     private List<PostedTalesInfo> convertPostsToPostInfos(List<Tale> tales) {
         return tales.stream()
-                .map(tale -> new PostedTalesInfo(tale, tale.countLikes(), findKeywords(tale)))
+                .map(tale -> new PostedTalesInfo(tale, tale.countLikes(), findKeywords(tale), true))
+                .collect(Collectors.toList());
+    }
+
+    private List<PostedTalesInfo> convertPostsToPostInfosWithMemberId(List<Tale> tales, Long memberId) {
+        return tales.stream()
+                .map(tale -> new PostedTalesInfo(tale, tale.countLikes(), findKeywords(tale), tale.checkMemberLikedPost(memberId)))
                 .collect(Collectors.toList());
     }
 

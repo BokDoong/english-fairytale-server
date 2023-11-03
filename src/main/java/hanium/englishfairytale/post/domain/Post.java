@@ -70,4 +70,9 @@ public class Post {
     public void updatePostDate() {
         postedTime = LocalDateTime.now();
     }
+
+    public boolean checkMemberLikedPost(Long memberId) {
+        return likes.stream()
+                .anyMatch(like -> like.getMemberId().equals(memberId));
+    }
 }

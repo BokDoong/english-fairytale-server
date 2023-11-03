@@ -66,6 +66,14 @@ public class Tale {
                 .collect(Collectors.toList());
     }
 
+    public static List<PostedTalesInfo> toTalesInfo(List<Tale> tales, Long memberId) {
+        List<PostedTalesInfo> postedTalesInfos = new ArrayList<>();
+        for (Tale tale : tales) {
+            postedTalesInfos.add(new PostedTalesInfo(tale, tale.checkMemberLikedPost(memberId)));
+        }
+        return postedTalesInfos;
+    }
+
     public boolean updateLike(Long memberId) {
         return post.updateLikeStatus(memberId, this);
     }
@@ -123,5 +131,9 @@ public class Tale {
 
     public int countLikes() {
         return post.getLikeCounts();
+    }
+
+    public boolean checkMemberLikedPost(Long memberId) {
+        return post.checkMemberLikedPost(memberId);
     }
 }

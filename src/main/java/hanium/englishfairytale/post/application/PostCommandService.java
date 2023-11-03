@@ -44,7 +44,7 @@ public class PostCommandService {
     }
 
     private Tale findTaleWithLikes(Long taleId) {
-        return postRepository.findTaleWithLikes(taleId)
+        return postRepository.findPostedTaleWithLikes(taleId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TALE_NOT_FOUND));
     }
 

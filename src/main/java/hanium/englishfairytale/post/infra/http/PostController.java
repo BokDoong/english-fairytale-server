@@ -27,8 +27,8 @@ public class PostController {
     }
 
     @GetMapping("/like")
-    public List<PostedTalesInfo> findPostsByLikes(@RequestParam int offset) {
-        return postQueryService.findPostsByLikes(offset);
+    public List<PostedTalesInfo> findPostsByLikes(@RequestParam int offset, @RequestParam Long memberId) {
+        return postQueryService.findPostsByLikes(offset, memberId);
     }
 
     @PostMapping("/like")
@@ -37,7 +37,7 @@ public class PostController {
     }
 
     @GetMapping("/date")
-    public List<PostedTalesInfo> findPostsByDate(@RequestParam int offset) {
-        return postQueryService.findPostsByDate(offset);
+    public List<PostedTalesInfo> findPostsByDate(@RequestParam int offset, @RequestParam Long memberId) {
+        return postQueryService.findPostsByDate(offset, memberId);
     }
 }
