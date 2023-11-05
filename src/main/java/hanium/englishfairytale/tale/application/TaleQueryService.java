@@ -7,7 +7,7 @@ import hanium.englishfairytale.tale.application.dto.TaleDetailInfo;
 import hanium.englishfairytale.tale.application.dto.TalesInfo;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaleQueryService {
 
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
     private final MemberRepository memberRepository;
 
     // 동화 상세조회
@@ -35,7 +35,7 @@ public class TaleQueryService {
     public List<TalesInfo> findAllTales(Long memberId, int offset) {
         verifyExistedMember(memberId);
         List<Tale> tales = findAllTales(memberId, offset, 20);
-        return convertTaleToTaleInfos(tales);
+        return convertTaleToTaleInfos(memberId, tales);
     }
 
     // 메인 페이지(5개 조회)
@@ -43,11 +43,11 @@ public class TaleQueryService {
     public List<TalesInfo> findRecentTales(Long memberId) {
         verifyExistedMember(memberId);
         List<Tale> tales = findAllTales(memberId, 0, 5);
-        return convertTaleToTaleInfos(tales);
+        return convertTaleToTaleInfos(memberId, tales);
     }
 
     private Tale findTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
+        return taleRepository.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
@@ -61,18 +61,18 @@ public class TaleQueryService {
         }
     }
 
-    private List<TalesInfo> convertTaleToTaleInfos(List<Tale> tales) {
+    private List<TalesInfo> convertTaleToTaleInfos(Long memberId, List<Tale> tales) {
         return tales.stream()
-                .map(tale -> new TalesInfo(tale, findKeywords(tale)))
+                .map(tale -> new TalesInfo(memberId, tale, findKeywords(tale)))
                 .collect(Collectors.toList());
     }
 
     private List<Keyword> findKeywords(Tale tale) {
-        return taleQueryDao.findKeywordByTaleId(tale.getId());
+        return taleRepository.findKeywordByTaleId(tale.getId());
     }
 
     private List<Tale> findAllTales(Long memberId, int offset, int limit) {
-        List<Tale> tales = taleQueryDao.findTalesByMemberId(memberId, offset, limit);
+        List<Tale> tales = taleRepository.findTalesByMemberId(memberId, offset, limit);
         if (tales.isEmpty()) {
             throw new NotFoundException(ErrorCode.TALE_NOT_CREATED);
         }

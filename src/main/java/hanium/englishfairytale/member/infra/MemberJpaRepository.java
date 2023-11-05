@@ -45,6 +45,19 @@ public class MemberJpaRepository implements MemberRepository {
     }
 
     @Override
+    // 회원+사진 조회
+    public Optional<Member> findMemberAndImage(Long memberId) {
+        List<Member> members = em.createQuery(
+                        "select m from Member m" +
+                                " left join fetch m.image.memberImage mi" +
+                                " where m.id = :memberId", Member.class
+                )
+                .setParameter("memberId" ,memberId)
+                .getResultList();
+        return members.stream().findAny();
+    }
+
+    @Override
     public Long save(Member member) {
         em.persist(member);
         return member.getId();

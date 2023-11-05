@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class MemberDetailInfo {
-    String nickname;
-    String email;
-    String phoneNumber;
-    String imageUrl;
+    private String nickname;
+    private String email;
+    private String phoneNumber;
+    private String imageUrl;
 
     public MemberDetailInfo(Member member) {
         this.nickname = member.getNickname();

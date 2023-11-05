@@ -6,10 +6,14 @@ import hanium.englishfairytale.member.application.dto.*;
 import hanium.englishfairytale.member.infra.http.dto.MemberLoginDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberRegisterDto;
 import hanium.englishfairytale.member.infra.http.dto.MemberUpdatePasswordDto;
+import hanium.englishfairytale.post.application.PostQueryService;
+import hanium.englishfairytale.post.application.dto.PostedTalesInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/member")
@@ -19,6 +23,7 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
     private final MemberDtoConverter converter;
+    private final PostQueryService postQueryService;
 
     @PostMapping("/register")
     public Long register(@Validated @RequestPart MemberRegisterDto memberRegisterDto,
@@ -64,6 +69,16 @@ public class MemberController {
     @DeleteMapping("/{memberId}/image")
     public void deleteImage(@PathVariable Long memberId) {
         memberCommandService.deleteMemberImage(memberId);
+    }
+
+    @GetMapping("/{memberId}/posts")
+    public List<PostedTalesInfo> findPosts(@PathVariable Long memberId, @RequestParam int offset) {
+        return postQueryService.findPostsForMyPage(offset, memberId);
+    }
+
+    @GetMapping("/{memberId}/posts/like")
+    public List<PostedTalesInfo> findLikedPosts(@PathVariable Long memberId, @RequestParam int offset) {
+        return postQueryService.findLikedPostsForMyPage(offset, memberId);
     }
 
     private MemberRegisterCommand toCreateCommand(MemberRegisterDto memberRegisterDto, MultipartFile image) {

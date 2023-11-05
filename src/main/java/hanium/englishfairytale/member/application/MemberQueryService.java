@@ -7,23 +7,25 @@ import hanium.englishfairytale.member.application.dto.MemberDetailInfo;
 import hanium.englishfairytale.member.application.dto.MemberInfo;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.member.domain.MemberRepository;
-import hanium.englishfairytale.member.infra.MemberQueryDao;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberQueryService {
 
     private final MemberRepository memberRepository;
-    private final MemberQueryDao memberQueryDao;
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
 
     @Transactional
     public void verifyNickname(String nickname) {
-        verifyNicknameDuplicated(nickname);
+        if (findMemberByNickname(nickname).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
+        }
     }
 
     @Transactional
@@ -36,18 +38,16 @@ public class MemberQueryService {
         return new MemberDetailInfo(findMember(memberId));
     }
 
+    private Optional<Member> findMemberByNickname(String nickname) {
+        return memberRepository.findMemberByNickname(nickname);
+    }
+
     private Member findMember(Long memberId) {
-        return memberQueryDao.findMemberAndImage(memberId)
+        return memberRepository.findMemberAndImage(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     private Long countTales(Long memberId) {
-        return taleQueryDao.countTales(memberId);
-    }
-
-    private void verifyNicknameDuplicated(String nickName) {
-        if (memberRepository.findMemberByNickname(nickName).isPresent()) {
-            throw new BusinessException(ErrorCode.DUPLICATED_NICKNAME);
-        }
+        return taleRepository.countTales(memberId);
     }
 }

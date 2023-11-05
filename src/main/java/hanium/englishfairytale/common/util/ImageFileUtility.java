@@ -11,12 +11,12 @@ import java.util.UUID;
 public class ImageFileUtility {
 
     // S3에 저장할 이름으로 변경
-    public static String createObjectNameByUUID(String originalFileName) {
+    public String createObjectNameByUUID(String originalFileName) {
         return UUID.randomUUID() + originalFileName;
     }
 
     // MetaData 설정
-    public static ObjectMetadata createObjectMetadata(MultipartFile multipartFile) {
+    public ObjectMetadata createObjectMetadata(MultipartFile multipartFile) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());

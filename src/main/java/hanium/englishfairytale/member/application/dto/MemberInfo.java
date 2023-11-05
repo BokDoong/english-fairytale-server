@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class MemberInfo {
-    String nickname;
-    String imageUrl;
-    Long taleCounts;
+    private String nickname;
+    private String imageUrl;
+    private Long taleCounts;
 
     public MemberInfo(Member member, Long taleCounts) {
         this.nickname = member.getNickname();
