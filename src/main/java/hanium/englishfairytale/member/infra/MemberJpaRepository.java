@@ -5,7 +5,6 @@ import hanium.englishfairytale.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Cacheable;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +40,19 @@ public class MemberJpaRepository implements MemberRepository {
     public Optional<Member> findMemberByNickname(String nickName) {
         List<Member> members = em.createQuery("select m from Member m where m.nickname = :nickName", Member.class)
                 .setParameter("nickName", nickName)
+                .getResultList();
+        return members.stream().findAny();
+    }
+
+    @Override
+    // 회원+사진 조회
+    public Optional<Member> findMemberAndImage(Long memberId) {
+        List<Member> members = em.createQuery(
+                        "select m from Member m" +
+                                " left join fetch m.image.memberImage mi" +
+                                " where m.id = :memberId", Member.class
+                )
+                .setParameter("memberId" ,memberId)
                 .getResultList();
         return members.stream().findAny();
     }

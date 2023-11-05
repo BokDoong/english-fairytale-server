@@ -40,4 +40,9 @@ public class PostController {
     public List<PostedTalesInfo> findPostsByDate(@RequestParam int offset, @RequestParam Long memberId) {
         return postQueryService.findPostsByDate(offset, memberId);
     }
+
+    @GetMapping("/search")
+    public List<PostedTalesInfo> findPostsByTitle(@RequestParam int offset, @RequestParam String title) {
+        return postQueryService.findPostedTalesByTitle(offset, title);
+    }
 }

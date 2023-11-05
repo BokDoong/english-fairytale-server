@@ -10,7 +10,6 @@ import hanium.englishfairytale.tale.application.dto.TaleUpdateCommand;
 import hanium.englishfairytale.tale.domain.*;
 import hanium.englishfairytale.tale.application.dto.TaleCreateResponse;
 import hanium.englishfairytale.tale.domain.factory.CreatedTale;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,6 @@ public class TaleCommandService {
     private final MemberRepository memberRepository;
     private final TaleRepository taleRepository;
     private final ImageRepository imageRepository;
-    private final TaleQueryDao taleQueryDao;
     private final TaleManageService taleManageService;
     private final FileManageService fileManageService;
 
@@ -72,7 +70,7 @@ public class TaleCommandService {
     }
 
     private Tale findTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
+        return taleRepository.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 

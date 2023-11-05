@@ -17,9 +17,9 @@ public class PostJpaRepository implements PostRepository {
     private final EntityManager em;
 
     // TODO: 키워드 중복 조회 -> 페이징 오류 개선
-    // 동화+좋아요 조회
+    // 포스팅 동화 단건조회
     @Override
-    public Optional<Tale> findPostedTaleWithLikes(Long taleId) {
+    public Optional<Tale> findPostedTale(Long taleId) {
         List<Tale> tales =  em.createQuery(
                         "select distinct t from Tale t" +
                                 " join fetch t.member m" +
@@ -31,8 +31,9 @@ public class PostJpaRepository implements PostRepository {
         return tales.stream().findAny();
     }
 
+    // 포스팅 동화 리스트 조회
     @Override
-    public List<Tale> findPostedTaleListWithLikes(int offset) {
+    public List<Tale> findPostedTaleList(int offset) {
         return em.createQuery(
                 "select t from Tale t" +
                         " join fetch t.member m" +
@@ -45,7 +46,25 @@ public class PostJpaRepository implements PostRepository {
                 .getResultList();
     }
 
-    // 게시글 날짜순 조회
+    // 게시글 제목으로 조회
+    @Override
+    public List<Tale> findPostedTaleListByTitle(int offset, int limit, String searchTitle) {
+        return em.createQuery(
+                "select t from Tale t" +
+                        " join fetch t.member m" +
+                        " left join fetch t.image.taleImage ti" +
+                        " where t.post.postStatus = :postStatus" +
+                        " and t.title like concat('%', :searchTitle, '%')" +
+                        " order by t.post.postedTime desc", Tale.class
+        )
+                .setParameter("postStatus", PostStatus.POSTED)
+                .setParameter("searchTitle", searchTitle)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    // 포스팅 동화 날짜순 조회
     @Override
     public List<Tale> findPostedTalesSortedByDate(int offset, int limit) {
         return em.createQuery(
@@ -79,7 +98,7 @@ public class PostJpaRepository implements PostRepository {
 
     // 좋아요 게시글 조회
     @Override
-    public List<Tale> findLikedPostedTalesByMemberId(Long memberId, int offset, int limit) {
+    public List<Tale> findLikedPostedTaleListByMemberId(Long memberId, int offset, int limit) {
         return em.createQuery(
                 "select t from Tale t" +
                         " join fetch t.member m" +
@@ -92,6 +111,4 @@ public class PostJpaRepository implements PostRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
-
-
 }

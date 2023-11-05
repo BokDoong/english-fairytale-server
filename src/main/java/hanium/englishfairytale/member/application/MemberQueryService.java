@@ -7,8 +7,7 @@ import hanium.englishfairytale.member.application.dto.MemberDetailInfo;
 import hanium.englishfairytale.member.application.dto.MemberInfo;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.member.domain.MemberRepository;
-import hanium.englishfairytale.member.infra.MemberQueryDao;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,7 @@ import java.util.Optional;
 public class MemberQueryService {
 
     private final MemberRepository memberRepository;
-    private final MemberQueryDao memberQueryDao;
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
 
     @Transactional
     public void verifyNickname(String nickname) {
@@ -45,11 +43,11 @@ public class MemberQueryService {
     }
 
     private Member findMember(Long memberId) {
-        return memberQueryDao.findMemberAndImage(memberId)
+        return memberRepository.findMemberAndImage(memberId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     private Long countTales(Long memberId) {
-        return taleQueryDao.countTales(memberId);
+        return taleRepository.countTales(memberId);
     }
 }

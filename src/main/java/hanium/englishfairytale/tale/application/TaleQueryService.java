@@ -7,7 +7,7 @@ import hanium.englishfairytale.tale.application.dto.TaleDetailInfo;
 import hanium.englishfairytale.tale.application.dto.TalesInfo;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaleQueryService {
 
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
     private final MemberRepository memberRepository;
 
     // 동화 상세조회
@@ -47,7 +47,7 @@ public class TaleQueryService {
     }
 
     private Tale findTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
+        return taleRepository.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
@@ -68,11 +68,11 @@ public class TaleQueryService {
     }
 
     private List<Keyword> findKeywords(Tale tale) {
-        return taleQueryDao.findKeywordByTaleId(tale.getId());
+        return taleRepository.findKeywordByTaleId(tale.getId());
     }
 
     private List<Tale> findAllTales(Long memberId, int offset, int limit) {
-        List<Tale> tales = taleQueryDao.findTalesByMemberId(memberId, offset, limit);
+        List<Tale> tales = taleRepository.findTalesByMemberId(memberId, offset, limit);
         if (tales.isEmpty()) {
             throw new NotFoundException(ErrorCode.TALE_NOT_CREATED);
         }

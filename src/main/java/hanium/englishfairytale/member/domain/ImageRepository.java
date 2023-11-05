@@ -1,6 +1,7 @@
 package hanium.englishfairytale.member.domain;
 
-public interface ImageRepository {
+import java.util.Optional;
 
+public interface ImageRepository {
     void delete(Long memberImageId);
 }

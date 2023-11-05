@@ -80,6 +80,7 @@ public class MemberController {
     public List<PostedTalesInfo> findLikedPosts(@PathVariable Long memberId, @RequestParam int offset) {
         return postQueryService.findLikedPostsForMyPage(offset, memberId);
     }
+
     private MemberRegisterCommand toCreateCommand(MemberRegisterDto memberRegisterDto, MultipartFile image) {
         return converter.toCommand(memberRegisterDto, image);
     }

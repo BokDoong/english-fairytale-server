@@ -12,5 +12,7 @@ public interface MemberRepository {
 
     Optional<Member> findMemberByNickname(String nickName);
 
+    Optional<Member> findMemberAndImage(Long memberId);
+
     Long save(Member member);
 }

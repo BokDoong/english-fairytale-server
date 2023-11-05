@@ -6,7 +6,7 @@ import hanium.englishfairytale.post.infra.PostQueryDao;
 import hanium.englishfairytale.post.infra.dto.PostLikesQueryDto;
 import hanium.englishfairytale.tale.domain.Keyword;
 import hanium.englishfairytale.tale.domain.Tale;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostQueryService {
 
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
     private final PostRepository postRepository;
     private final PostQueryDao postQueryDao;
 
@@ -33,7 +33,7 @@ public class PostQueryService {
         // 좋아요수 꼽아줌
         postedTalesInfos.forEach(info -> info.setLikeCounts((postLikesMap.get(info.getTaleId()) == null) ? 0 : postLikesMap.get(info.getTaleId()).size()));
         // 키워드 찾아서 꼽아줌
-        postedTalesInfos.forEach(info -> info.setKeywordContents(taleQueryDao.findKeywordByTaleId(info.getTaleId())));
+        postedTalesInfos.forEach(info -> info.setKeywordContents(taleRepository.findKeywordByTaleId(info.getTaleId())));
         // 좋아요순 정렬
         return Tale.sortPostedTalesByLikes(postedTalesInfos);
     }
@@ -57,8 +57,14 @@ public class PostQueryService {
         return convertPostsToPostInfos(tales);
     }
 
+    @Transactional
+    public List<PostedTalesInfo> findPostedTalesByTitle(int offset, String title) {
+        List<Tale> tales = postRepository.findPostedTaleListByTitle(offset, 20, title);
+        return convertPostsToPostInfos(tales);
+    }
+
     private List<Tale> findLikesPostedTalesByMemberId(int offset, Long memberId) {
-        return postRepository.findLikedPostedTalesByMemberId(memberId, offset, 20);
+        return postRepository.findLikedPostedTaleListByMemberId(memberId, offset, 20);
     }
 
     private List<Tale> findPostedTalesByMemberId(int offset, Long memberId) {
@@ -70,7 +76,7 @@ public class PostQueryService {
     }
 
     private List<PostedTalesInfo> findPostedTaleInfos(int offset, Long memberId) {
-        List<Tale> tales = postRepository.findPostedTaleListWithLikes(offset);
+        List<Tale> tales = postRepository.findPostedTaleList(offset);
         return Tale.toTalesInfo(tales, memberId);
     }
 
@@ -91,7 +97,7 @@ public class PostQueryService {
     }
 
     private List<Keyword> findKeywords(Tale tale) {
-        return taleQueryDao.findKeywordByTaleId(tale.getId());
+        return taleRepository.findKeywordByTaleId(tale.getId());
     }
 
 }

@@ -5,7 +5,7 @@ import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.post.domain.PostRepository;
 import hanium.englishfairytale.tale.domain.Tale;
-import hanium.englishfairytale.tale.infra.TaleQueryDao;
+import hanium.englishfairytale.tale.domain.TaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostCommandService {
 
     private final PostRepository postRepository;
-    private final TaleQueryDao taleQueryDao;
+    private final TaleRepository taleRepository;
 
     @Transactional
     public void post(Long taleId) {
@@ -44,12 +44,12 @@ public class PostCommandService {
     }
 
     private Tale findTaleWithLikes(Long taleId) {
-        return postRepository.findPostedTaleWithLikes(taleId)
+        return postRepository.findPostedTale(taleId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TALE_NOT_FOUND));
     }
 
     private Tale findTale(Long taleId) {
-        return taleQueryDao.findTaleByTaleId(taleId)
+        return taleRepository.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
