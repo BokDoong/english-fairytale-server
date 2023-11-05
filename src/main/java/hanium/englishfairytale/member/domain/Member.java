@@ -23,8 +23,6 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
-    private String name;
     @Column(name = "phoneNumber")
     private String phoneNumber;
     @Column(name = "nickname")
@@ -42,8 +40,7 @@ public class Member {
     private List<Tale> tales = new ArrayList<>();
 
     @Builder
-    public Member(String name, String phoneNumber, String nickname, String email, String password) {
-        this.name = name;
+    public Member(String phoneNumber, String nickname, String email, String password) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.email = email;

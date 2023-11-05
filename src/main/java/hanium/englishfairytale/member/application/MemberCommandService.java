@@ -119,7 +119,6 @@ public class MemberCommandService {
 
     private Member createMember(MemberRegisterCommand memberRegisterCommand) {
         return Member.builder()
-                .name(memberRegisterCommand.getName())
                 .phoneNumber(memberRegisterCommand.getPhoneNumber())
                 .nickname(memberRegisterCommand.getNickname())
                 .email(memberRegisterCommand.getEmail())

@@ -24,7 +24,7 @@ public class TaleDetailInfo {
     public TaleDetailInfo(Tale tale, List<Keyword> keywordList) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
-        this.memberName = tale.getMemberName();
+        this.memberName = tale.getMemberNickname();
         this.engTale = tale.getEngTale();
         this.korTale = tale.getKorTale();
         this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();

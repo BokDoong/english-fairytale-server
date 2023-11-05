@@ -82,8 +82,8 @@ public class Tale {
         post.verifyAlreadyPosted();
     }
 
-    public String getMemberName() {
-        return member.getName();
+    public String getMemberNickname() {
+        return member.getNickname();
     }
 
     public void putImage(TaleImage taleImage) {

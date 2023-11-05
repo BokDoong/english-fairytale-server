@@ -20,7 +20,7 @@ public class PostedTalesInfo {
     public PostedTalesInfo(Tale tale, int likeCounts, List<Keyword> keywords, boolean liked) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
-        this.nickname = tale.getMemberName();
+        this.nickname = tale.getMemberNickname();
         this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
         this.likeCounts = likeCounts;
         this.liked = liked;
@@ -34,7 +34,7 @@ public class PostedTalesInfo {
     public PostedTalesInfo(Tale tale, boolean liked) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
-        this.nickname = tale.getMemberName();
+        this.nickname = tale.getMemberNickname();
         this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
         this.liked = liked;
         this.keywords = new ArrayList<>();

@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberDtoConverter {
     public MemberRegisterCommand toCommand(MemberRegisterDto dto, MultipartFile image) {
         return MemberRegisterCommand.builder()
-                .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())
                 .nickname(dto.getNickname())
                 .email(dto.getEmail())
