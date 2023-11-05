@@ -39,7 +39,6 @@ public class PostCommandService {
     @Transactional
     public boolean updateLikes(Long memberId, Long taleId) {
         Tale tale = findTaleWithLikes(taleId);
-        tale.verifyPostNotExisted();
         return tale.updateLike(memberId);
     }
 

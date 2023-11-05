@@ -42,7 +42,7 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public List<PostedTalesInfo> findPostsByTitle(@RequestParam int offset, @RequestParam String title) {
-        return postQueryService.findPostedTalesByTitle(offset, title);
+    public List<PostedTalesInfo> findPostsByTitle(@RequestParam int offset, @RequestParam String title, @RequestParam Long memberId) {
+        return postQueryService.findPostedTalesByTitle(offset, title, memberId);
     }
 }

@@ -35,7 +35,7 @@ public class TaleQueryService {
     public List<TalesInfo> findAllTales(Long memberId, int offset) {
         verifyExistedMember(memberId);
         List<Tale> tales = findAllTales(memberId, offset, 20);
-        return convertTaleToTaleInfos(tales);
+        return convertTaleToTaleInfos(memberId, tales);
     }
 
     // 메인 페이지(5개 조회)
@@ -43,7 +43,7 @@ public class TaleQueryService {
     public List<TalesInfo> findRecentTales(Long memberId) {
         verifyExistedMember(memberId);
         List<Tale> tales = findAllTales(memberId, 0, 5);
-        return convertTaleToTaleInfos(tales);
+        return convertTaleToTaleInfos(memberId, tales);
     }
 
     private Tale findTale(Long taleId) {
@@ -61,9 +61,9 @@ public class TaleQueryService {
         }
     }
 
-    private List<TalesInfo> convertTaleToTaleInfos(List<Tale> tales) {
+    private List<TalesInfo> convertTaleToTaleInfos(Long memberId, List<Tale> tales) {
         return tales.stream()
-                .map(tale -> new TalesInfo(tale, findKeywords(tale)))
+                .map(tale -> new TalesInfo(memberId, tale, findKeywords(tale)))
                 .collect(Collectors.toList());
     }
 

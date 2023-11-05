@@ -17,12 +17,14 @@ public class TalesInfo {
     private String imgUrl;
     private String imgStatus;
     private List<String> keywords;
+    private boolean liked;
 
-    public TalesInfo(Tale tale, List<Keyword> keywordList) {
+    public TalesInfo(Long memberId, Tale tale, List<Keyword> keywordList) {
         this.taleId = tale.getId();
         this.title = tale.getTitle();
         this.imgUrl = tale.getImage().getTaleImage() == null ? null : tale.getImage().getUrl();
         this.imgStatus = tale.getImageStatus();
+        this.liked = tale.checkMemberLikedPost(memberId);
 
         keywords = new ArrayList<>();
         for (Keyword keyword : keywordList) {

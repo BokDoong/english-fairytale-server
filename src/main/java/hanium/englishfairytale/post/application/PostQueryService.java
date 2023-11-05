@@ -53,17 +53,17 @@ public class PostQueryService {
 
     @Transactional
     public List<PostedTalesInfo> findLikedPostsForMyPage(int offset, Long memberId) {
-        List<Tale> tales = findLikesPostedTalesByMemberId(offset, memberId);
-        return convertPostsToPostInfos(tales);
+        List<Tale> tales = findLikedPostedTalesByMemberId(offset, memberId);
+        return convertLikedPostsToPostInfos(tales);
     }
 
     @Transactional
-    public List<PostedTalesInfo> findPostedTalesByTitle(int offset, String title) {
+    public List<PostedTalesInfo> findPostedTalesByTitle(int offset, String title, Long memberId) {
         List<Tale> tales = postRepository.findPostedTaleListByTitle(offset, 20, title);
-        return convertPostsToPostInfos(tales);
+        return convertPostsToPostInfosWithMemberId(tales, memberId);
     }
 
-    private List<Tale> findLikesPostedTalesByMemberId(int offset, Long memberId) {
+    private List<Tale> findLikedPostedTalesByMemberId(int offset, Long memberId) {
         return postRepository.findLikedPostedTaleListByMemberId(memberId, offset, 20);
     }
 
@@ -84,7 +84,7 @@ public class PostQueryService {
         return postRepository.findPostedTalesSortedByDate(offset, 20);
     }
 
-    private List<PostedTalesInfo> convertPostsToPostInfos(List<Tale> tales) {
+    private List<PostedTalesInfo> convertLikedPostsToPostInfos(List<Tale> tales) {
         return tales.stream()
                 .map(tale -> new PostedTalesInfo(tale, tale.countLikes(), findKeywords(tale), true))
                 .collect(Collectors.toList());
