@@ -31,7 +31,7 @@ public class MemberController {
         return memberCommandService.register(toCreateCommand(memberRegisterDto, image));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public Long login(@Validated @RequestBody MemberLoginDto memberLoginDto) {
         return memberCommandService.login(converter.toCommand(memberLoginDto));
     }
