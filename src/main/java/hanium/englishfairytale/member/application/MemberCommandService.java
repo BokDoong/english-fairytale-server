@@ -97,7 +97,7 @@ public class MemberCommandService {
     }
 
     private boolean checkImageEmpty(MemberRegisterCommand memberRegisterCommand) {
-        return memberRegisterCommand.getImage().isEmpty();
+        return memberRegisterCommand.getImage()==null;
     }
 
     private Long saveMember(Member member) {

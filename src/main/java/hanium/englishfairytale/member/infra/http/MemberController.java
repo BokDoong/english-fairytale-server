@@ -27,7 +27,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public Long register(@Validated @RequestPart MemberRegisterDto memberRegisterDto,
-                                         @RequestPart MultipartFile image) {
+                                         @RequestPart(required = false) MultipartFile image) {
         return memberCommandService.register(toCreateCommand(memberRegisterDto, image));
     }
 
