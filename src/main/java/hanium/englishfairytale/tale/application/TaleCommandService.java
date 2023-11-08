@@ -76,7 +76,7 @@ public class TaleCommandService {
 
     private Tale createTale(TaleCreateCommand taleCreateCommand) {
         Member member = findMember(taleCreateCommand.getMemberId());
-        CreatedTale createdTale = createEnglishTale(taleCreateCommand);
+        CreatedTale createdTale = createTaleByLLM(taleCreateCommand);
         return Tale.builder()
                 .title(createdTale.getTitle())
                 .engTale(createdTale.getEngTale())
@@ -91,7 +91,7 @@ public class TaleCommandService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, memberId));
     }
 
-    private CreatedTale createEnglishTale(TaleCreateCommand taleCreateCommand) {
+    private CreatedTale createTaleByLLM(TaleCreateCommand taleCreateCommand) {
         verifyInputKeywords(taleCreateCommand);
         return taleManageService.post(taleCreateCommand.getModel(), taleCreateCommand.getKeywords());
     }
@@ -102,7 +102,7 @@ public class TaleCommandService {
     }
 
     private TaleCreateResponse saveTaleAndKeywords(Tale tale, List<Keyword> keywords, MultipartFile image) {
-        if (!image.isEmpty()) {
+        if (image != null) {
             tale.putImage(createAndSaveTaleImage(image));
         }
         saveTaleKeywords(tale, keywords);
