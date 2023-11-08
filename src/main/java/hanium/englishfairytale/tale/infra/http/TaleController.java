@@ -23,7 +23,7 @@ public class TaleController {
 
     @PostMapping("create")
     public TaleCreateResponse create(@Validated @RequestPart TaleCreateDto taleCreateDto,
-                                                     @RequestPart MultipartFile image) {
+                                                     @RequestPart(required = false) MultipartFile image) {
         return taleCommandService.create(toCreateCommand(taleCreateDto, image));
     }
 
