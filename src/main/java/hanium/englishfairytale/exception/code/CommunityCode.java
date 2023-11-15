@@ -9,6 +9,7 @@ public enum CommunityCode {
 
     POST_NOT_FOUND("CM-001"),
     EXISTED_POST("CM-002"),
+    EXISTED_REPORT("CM-003"),
     ;
 
     private final String code;

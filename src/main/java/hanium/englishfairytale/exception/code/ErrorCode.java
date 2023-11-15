@@ -46,6 +46,7 @@ public enum ErrorCode {
     // COMMUNITY
     POST_NOT_FOUND(CommunityCode.POST_NOT_FOUND.getCode(), NOT_FOUND, "존재하지 않는 게시글"),
     EXISTED_POST(CommunityCode.EXISTED_POST.getCode(), CONFLICT, "해당 동화에 대한 게시글이 이미 존재할 때"),
+    EXISTED_REPORT(CommunityCode.EXISTED_REPORT.getCode(), CONFLICT, "이미 신고한 경우")
     ;
 
     private final String code;
