@@ -22,7 +22,9 @@ public class TaleUtility {
     public static List<CreateTaleFactoryDto> createKorTaleMessages(String engTale) {
         List<CreateTaleFactoryDto> messages = new ArrayList<>();
         messages.add(new CreateTaleFactoryDto("assistant", engTale));
-        messages.add(new CreateTaleFactoryDto("user", "Please change the above fairy tale to Korean."));
+        messages.add(new CreateTaleFactoryDto("user", "Please translate this English fairytale into Korean." +
+                " When you translate, please translate one English sentence into one Korean sentence." +
+                " For your information, the division unit of the sentence here is divided based on symbol \".\""));
 
         return messages;
     }
@@ -30,7 +32,7 @@ public class TaleUtility {
     public static List<CreateTaleFactoryDto> createTaleTitleMessages(String engTale) {
         List<CreateTaleFactoryDto> messages = new ArrayList<>();
         messages.add(new CreateTaleFactoryDto("assistant", engTale));
-        messages.add(new CreateTaleFactoryDto("user", "Please give me a title for the fairy tale above."));
+        messages.add(new CreateTaleFactoryDto("user", "Please give me a title for this fairy tale."));
 
         return messages;
     }

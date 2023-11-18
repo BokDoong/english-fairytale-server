@@ -11,7 +11,7 @@ import java.util.List;
 
 @Embeddable
 @Getter
-public class Post {
+public class PostInfo {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
     @Column(name = "posted_date")
@@ -20,7 +20,7 @@ public class Post {
     @OneToMany(mappedBy = "tale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
-    public Post() {
+    public PostInfo() {
         this.postStatus = PostStatus.NOT_POSTED;
         this.postedTime = LocalDateTime.now();
     }

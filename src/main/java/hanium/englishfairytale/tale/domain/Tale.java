@@ -4,7 +4,8 @@ import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.Member;
 import hanium.englishfairytale.post.application.dto.PostedTalesInfo;
-import hanium.englishfairytale.post.domain.Post;
+import hanium.englishfairytale.post.domain.PostInfo;
+import hanium.englishfairytale.post.domain.PostStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class Tale {
     @Embedded
     private Image image;
     @Embedded
-    private Post post;
+    private PostInfo postInfo;
     @Column(name = "created_date")
     private LocalDateTime createdTime;
 
@@ -50,7 +51,7 @@ public class Tale {
         this.image = new Image(imageStatus);
         this.createdTime = LocalDateTime.now();
         this.member = member;
-        this.post = new Post();
+        this.postInfo = new PostInfo();
         member.addTale(this);
     }
 
@@ -74,12 +75,16 @@ public class Tale {
         return postedTalesInfos;
     }
 
+    public PostStatus getPostedStatus() {
+        return postInfo.getPostStatus();
+    }
+
     public boolean updateLike(Long memberId) {
-        return post.updateLikeStatus(memberId, this);
+        return postInfo.updateLikeStatus(memberId, this);
     }
 
     public void verifyPostAlreadyExisted() {
-        post.verifyAlreadyPosted();
+        postInfo.verifyAlreadyPosted();
     }
 
     public String getMemberNickname() {
@@ -118,22 +123,22 @@ public class Tale {
     }
 
     public void posting() {
-        post.updatePostStatus();
-        post.updatePostDate();
+        postInfo.updatePostStatus();
+        postInfo.updatePostDate();
     }
     public void deletePosting() {
-        post.updatePostStatus();
+        postInfo.updatePostStatus();
     }
 
     public void verifyPostNotExisted() {
-        post.verifyNotExited();
+        postInfo.verifyNotExited();
     }
 
     public int countLikes() {
-        return post.getLikeCounts();
+        return postInfo.getLikeCounts();
     }
 
     public boolean checkMemberLikedPost(Long memberId) {
-        return post.checkMemberLikedPost(memberId);
+        return postInfo.checkMemberLikedPost(memberId);
     }
 }

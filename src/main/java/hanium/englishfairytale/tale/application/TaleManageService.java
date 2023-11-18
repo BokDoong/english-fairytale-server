@@ -14,7 +14,6 @@ public class TaleManageService {
 
     private final TaleFactory taleFactory;
 
-    // TODO: GPT 한테 json 형태로 받아오기
     public CreatedTale post(String model, List<String> keywords) {
 
         // 키워드 -> 동화 제작 질문 작성 및 생성
