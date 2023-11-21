@@ -23,7 +23,6 @@ public class TaleQueryService {
     private final MemberRepository memberRepository;
 
     // 동화 상세조회
-    // TODO: 2023.10.06 좋아요 개수 표시
     @Transactional(readOnly = true)
     public TaleDetailInfo findDetailTale(Long taleId) {
         Tale tale = findTale(taleId);
