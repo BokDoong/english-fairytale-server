@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.BindException;
 
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler {
     // 비즈니스 예외 처리시 발생
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    }
+
+    // S3 이미지 저장시 발생하는 예외 처리
+    @ExceptionHandler(RuntimeIOException.class)
+    protected ResponseEntity<ErrorResponse> bindException(RuntimeIOException e) {
+        log.error("handleRuntimeIOException", e);
         return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 
@@ -65,21 +73,15 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(ErrorCode.FILE_SIZE);
     }
 
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> s3ImageSave(RuntimeIOException e) {
-        log.error("handleRuntimeIOException", e);
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
-    }
-
     // 데이터 잘못 넘어갔을 경우 발생
-    @ExceptionHandler
+    @ExceptionHandler(IllegalStateException.class)
     protected ResponseEntity<ErrorResponse> illegalArgumentException(IllegalArgumentException e) {
         log.error("handleIllegalArgumentException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.INVALID_REQUEST_PARAMETER);
     }
 
     // 데이터 무결성 위반한 경우 발생
-    @ExceptionHandler
+    @ExceptionHandler(DataIntegrityViolationException.class)
     protected ResponseEntity<ErrorResponse> dataIntegrityViolationException(DataIntegrityViolationException e) {
         log.error("handleDataIntegrityViolationException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.DATA_INTEGRITY_VIOLATE);
@@ -89,7 +91,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("handleEntityNotFoundException", e);
-        return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE);
+        return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE, e);
     }
 
 }

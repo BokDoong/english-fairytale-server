@@ -1,5 +1,6 @@
 package hanium.englishfairytale.tale.application;
 
+import hanium.englishfairytale.exception.BusinessException;
 import hanium.englishfairytale.exception.NotFoundException;
 import hanium.englishfairytale.exception.code.ErrorCode;
 import hanium.englishfairytale.member.domain.MemberRepository;
