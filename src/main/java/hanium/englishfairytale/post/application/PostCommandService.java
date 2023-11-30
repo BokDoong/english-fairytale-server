@@ -44,13 +44,11 @@ public class PostCommandService {
 
     private Tale findTaleWithLikes(Long taleId) {
         return postRepository.findPostedTale(taleId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.TALE_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
 
     private Tale findTale(Long taleId) {
         return taleRepository.findTaleByTaleId(taleId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.TALE_NOT_FOUND));
     }
-
-
 }

@@ -88,7 +88,7 @@ public class TaleCommandService {
 
     private Member findMember(Long memberId) {
         return memberRepository.findMemberById(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, memberId));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     private CreatedTale createTaleByLLM(TaleCreateCommand taleCreateCommand) {

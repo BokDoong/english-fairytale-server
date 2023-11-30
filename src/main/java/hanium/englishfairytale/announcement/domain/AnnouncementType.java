@@ -26,6 +26,6 @@ public enum AnnouncementType {
                 return at;
             }
         }
-        throw  new NotFoundException(ErrorCode.ANNOUNCEMENT_TYPE_NOT_FOUND);
+        throw new NotFoundException(ErrorCode.ANNOUNCEMENT_TYPE_NOT_FOUND);
     }
 }
