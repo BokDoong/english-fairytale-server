@@ -93,5 +93,4 @@ public class GlobalExceptionHandler {
         log.error("handleEntityNotFoundException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE, e);
     }
-
 }

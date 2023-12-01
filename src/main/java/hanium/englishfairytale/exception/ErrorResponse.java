@@ -35,14 +35,4 @@ public class ErrorResponse {
                         .message(e.getMessage())
                         .build());
     }
-
-    @Override
-    public String toString() {
-        return "ErrorResponse = {" +
-                "status=" + status +
-                ", error='" + error + '\'' +
-                ", code='" + code + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
 }
