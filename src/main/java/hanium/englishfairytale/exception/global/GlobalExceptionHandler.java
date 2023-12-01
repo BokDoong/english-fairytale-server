@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
     }
 
     // 나머지 에러 여기서 핸들링
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("handleEntityNotFoundException", e);
         return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE, e);
