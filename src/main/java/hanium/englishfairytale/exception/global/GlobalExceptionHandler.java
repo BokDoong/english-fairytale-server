@@ -25,7 +25,7 @@ import java.net.BindException;
 public class GlobalExceptionHandler {
 
     // 비즈니스 예외 처리시 발생
-    @ExceptionHandler
+    @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
         return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
@@ -91,6 +91,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("handleEntityNotFoundException", e);
-        return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE, e);
+        return ErrorResponse.toResponseEntity(ErrorCode.SERVICE_UNAVAILABLE);
     }
 }

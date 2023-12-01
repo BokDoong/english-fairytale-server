@@ -24,15 +24,4 @@ public class ErrorResponse {
                         .message(errorCode.getMessage())
                         .build());
     }
-
-    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode, Exception e) {
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(ErrorResponse.builder()
-                        .status(errorCode.getStatus().value())
-                        .error(errorCode.getStatus().name())
-                        .code(errorCode.getCode())
-                        .message(e.getMessage())
-                        .build());
-    }
 }
