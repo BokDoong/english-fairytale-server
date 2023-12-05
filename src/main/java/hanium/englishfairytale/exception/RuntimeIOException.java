@@ -1,0 +1,14 @@
+package hanium.englishfairytale.exception;
+
+import hanium.englishfairytale.exception.code.ErrorCode;
+import lombok.Getter;
+
+@Getter
+public class RuntimeIOException extends RuntimeException{
+    private final ErrorCode errorCode;
+
+    public RuntimeIOException(Throwable cause, ErrorCode errorCode) {
+        super(cause);
+        this.errorCode = errorCode;
+    }
+}
