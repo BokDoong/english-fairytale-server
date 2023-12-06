@@ -73,7 +73,10 @@
 ### ⚠️ 에러코드 문서화
 <img width="1273" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/2f87b486-3652-4297-8a00-f7a735c3d447">
 
-### 시연 영상
+### 🏆 한이음 ICT멘토링 수행확인서
+<img width="528" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/2b154f3f-14e7-4d6c-a1a7-5fd9143768ab">
+
+### 🎯 시연 영상
 <[https://youtu.be/Tjqp_n2_jeY](https://youtu.be/NAEq48KNTXs?si=M1LqGmm4WCv0PLOS)>
 
 <img width="368" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/b990ca44-c82c-421b-96fa-9c374c911673">
