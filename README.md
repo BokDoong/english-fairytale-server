@@ -64,6 +64,7 @@
 
 ### ✅ [API 명세서(Notion)](https://rigorous-lentil-508.notion.site/API-8d1782af488147659333ae8d80113ce5?pvs=4)
 <img width="1458" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/5edfdbf3-9b7d-4e81-88c8-9a1e9b39b808">
+
 <br/><br/>
 ## Acheivement
 ### 📝 학습 기록 및 트러블 슈팅과 리팩토링
