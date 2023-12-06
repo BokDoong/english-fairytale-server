@@ -56,12 +56,14 @@
 ### 📜 ERD
 ![한이음](https://github.com/BokDoong/english-fairytale-backend/assets/102129660/32d4d986-be0b-4814-94f8-9847a78262f9)
 
+### 📈 데이터 플로우
+<img width="634" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/2d35eae1-6e3a-4d22-aecc-01e13476e253">
+
 ### 🤝 [Notion 팀 협업페이지를 통한 대회 문서 및 프로젝트 운영 관리](https://rigorous-lentil-508.notion.site/b6c6e4104de24b1583214612894b2653?pvs=4)
 <img width="1297" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/8d21bfc6-1104-44cb-9ae4-e1c44b6133d2">
 
 ### ✅ [API 명세서(Notion)](https://rigorous-lentil-508.notion.site/API-8d1782af488147659333ae8d80113ce5?pvs=4)
 <img width="1458" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/5edfdbf3-9b7d-4e81-88c8-9a1e9b39b808">
-
 <br/><br/>
 ## Acheivement
 ### 📝 학습 기록 및 트러블 슈팅과 리팩토링
