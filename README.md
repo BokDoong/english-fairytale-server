@@ -53,6 +53,9 @@
 
 <br/><br/>
 ## 문서
+### 🗣️ [구글폼 설문지](https://docs.google.com/forms/d/1tXUFo3YnnJFZyL0TUc9C05laLilPB5JUUAeamcEMvFg/edit)
+<img width="630" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/717bf4f2-60e2-4289-97fd-0312d9fc265a">
+
 ### 📜 ERD
 ![한이음](https://github.com/BokDoong/english-fairytale-backend/assets/102129660/32d4d986-be0b-4814-94f8-9847a78262f9)
 
