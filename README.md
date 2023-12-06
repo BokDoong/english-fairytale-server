@@ -59,18 +59,22 @@
 ### 🤝 [Notion 팀 협업페이지를 통한 대회 문서 및 프로젝트 운영 관리](https://rigorous-lentil-508.notion.site/b6c6e4104de24b1583214612894b2653?pvs=4)
 <img width="1297" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/8d21bfc6-1104-44cb-9ae4-e1c44b6133d2">
 
-### ✅ [API 명세서(Notion) 및 에러코드 문서화](https://rigorous-lentil-508.notion.site/API-8d1782af488147659333ae8d80113ce5?pvs=4)
-<img width="1235" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/70d8f2a5-04b7-488d-8bf1-f8050d47fa63">
-
+### ✅ [API 명세서(Notion)](https://rigorous-lentil-508.notion.site/API-8d1782af488147659333ae8d80113ce5?pvs=4)
+<img width="1458" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/5edfdbf3-9b7d-4e81-88c8-9a1e9b39b808">
 
 <br/><br/>
 ## Acheivement
-### UMC 4기 밥먹공 서비스 랜딩 페이지
-<https://www.makeus.in/533be1a1-dec8-4d2f-8c5e-0f63f1ca422e>
+### 📝 학습 기록 및 트러블 슈팅과 리팩토링
+* [도메인 주도 개발에 대한 학습 기록](https://rigorous-lentil-508.notion.site/DDD-Domain-Drive-Design-693b5c9412c84869b3d1ead9f050fbff?pvs=4)
+* [Spring의 예외 처리](https://ctce7226.tistory.com/7)
+* [원활한 개발과 유지보수를 가능케 하는 에외(에러코드) 커스텀화](https://ctce7226.tistory.com/8)
+* [표준 예외 vs 사용자 정의 예외](https://ctce7226.tistory.com/6)
 
-<img width="500" height="350" alt="image" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/098f0329-721b-4e09-b4df-220430bb0a22">
+### ⚠️ 에러코드 문서화
+<img width="1273" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/2f87b486-3652-4297-8a00-f7a735c3d447">
 
 ### 시연 영상
-<https://youtu.be/Tjqp_n2_jeY>
+<[https://youtu.be/Tjqp_n2_jeY](https://youtu.be/NAEq48KNTXs?si=M1LqGmm4WCv0PLOS)>
 
-<img width="500" height="350" alt="image" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/3a999190-a9c6-4800-b497-338d748dbe7e">
+<img width="368" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/b990ca44-c82c-421b-96fa-9c374c911673">
+
