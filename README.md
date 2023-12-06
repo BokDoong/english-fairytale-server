@@ -1,9 +1,9 @@
 # I Luv Book - GPT를 활용한 영어동화 창작 서비스
-![image](https://github.com/BokDoong/today-eat-backend/assets/102129660/e177e270-c115-40aa-be8e-3efd7239916e)
+<img width="1000" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/e8c1a113-742d-4d84-ab1e-2b70653db5d7">
 
 
 ## Introduction
-2023 한이음 ICT멘토링을 진행하며 멘토님과 팀원들과 진행한 프로젝트입니다.
+2023 한이음 ICT멘토링을 진행하며 멘토님의 지도 하에 팀원들과 진행한 프로젝트입니다.
 
 ### 👶 프로젝트 설명
 아이들에게 영어를 가르칠 때 가장 중요한 요소는 무엇이라고 생각하나요?
@@ -18,54 +18,50 @@
 * 개발: 2023.09 ~ 2023.11
 
 ### 🧑‍🤝‍🧑 팀 구성
-<img width="1000" alt="스크린샷 2023-12-05 오후 9 55 12" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/86e92324-3c4a-43e6-86d3-6e9b28c75775">
+* 송춘광 멘토님: 기획 및 멘토
+* 이진: 팀장, Springboot 서버 개발, Notion 프로젝트 협업 페이지 제작 및 운영
+* 신재희: 클라우드 아키텍쳐링
+* 엄재웅, 나민혁: 안드로이드 개발
 
 <br/><br/>
 ## BE Skills
-<img width="700" height="500" alt="스크린샷 2023-12-05 오후 10 32 18" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/1c8e99a1-d003-4990-b1ba-d29bd54ba6ad">
+<img width="700" height="450" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/b30a3e3e-aaff-463a-aa2e-07a4539f4d70">
 
-* Javascript
-* Node.js, Express.js
-* Prisma ORM
-* MySQL
-* Redis
-* AWS 인프라(EC2, RDS, ElastiCache, S3)
-* Google Map Places API
-* Notion, Git
+* JDK 11 
+* Springboot 2.8.3
+* MariaDB
+* Spring Data JPA
+* Spring Data Redis
+* AWS 인프라(EC2, RDS, ElastiCache, S3, CodeDeploy)
+* Docker, Github Action
+* ChatGPT Open API
+* Notion, Git, Slack
 
 <br/><br/>
 ## Main Functions
+### 1️⃣ ChatGPT를 활용한 동화 창작 및 열람
+* 자신이 원하는 키워드를 입력하면, 해당 키워드와 관련된 영어 동화를 ChatGPT OpenAPI를 이용해 창작합니다.
+* 창작된 동화의 영어본 뿐 아닌, 한글 자막본을 확인할 수 있으며 TTS를 통해 발음을 들으며 공부할 수 있는 기능을 제공합니다.
 
-### [API 명세서(Notion)](https://shade-diploma-0bf.notion.site/API-8a2c4537a5644b38a5ecf613011e9efa?pvs=4)
+### 2️⃣ 회원제 서비스
+* 이메일 및 인증을 통해 회원가입을 진행합니다.
+* 유저 정보 관리 및 생성 동화, 커뮤니티의 찜한 동화 관리 및 확인할 수 있습니다.
 
-### 1️⃣ 회원제 서비스
-* 학교 이메일 및 인증을 통해 회원가입을 진행합니다.
-* 로그인 및 소셜 로그인(Kakao, Apple)을 통해 서비스를 이용할 수 있습니다.
-* 유저 정보 관리 및 가게 리뷰, 찜하기 기능을 제공합니다.
-
-### 2️⃣ 맞춤형 지도 기반 대학가 가게정보 확인
-* 회원가입 때 인증하였던 학교를 중심으로 1.5km 내 모든 가게의 정보를 제공합니다.
-* '걸어서 2분'부터 '걸어서 10+분'까지 제한된 시간 내에 갈 수 있는 식당을 선별하는 거리 옵션, 카테고리와 메뉴 카테고리 별로 맞춤형 지도에서 확인할 수 있습니다.
-
-### 3️⃣ 키워드 랭킹
-* 키워드 별로 가게를 나누어 학생들의 기호에 맞게 가게 정보를 제공합니다.
-* 키워드 별로 랭킹 정보를 제공합니다.
-  * **혼밥 랭킹** - 혼자 밥먹어도 문제 없어!
-  * **가성비 랭킹** - 역시 대학생은 가성비 있는게 최고야!
-  * **단체 랭킹** - 우리 동아리 회식하는데 단체 장소로 적합한 곳이 없을까?
-  * **밥약 랭킹** - 아 오늘 신입생 후배 밥 사주기로 했는데.. 어디가지?
-  * **술자리 랭킹** - 학교 근처에 술집이 너무 많아..! 안주 맛있는 곳 어디 없을까?
+### 3️⃣ 커뮤니티 서비스
+* 자신이 창작한 동화를 커뮤니티에 올리고 다른 회원들의 동화를 확인할 수 있습니다.
+* 좋아요 기능을 통해 동화들을 좋아요순으로 확인할 수 있습니다.
 
 <br/><br/>
 ## 문서
 ### 📜 ERD
-![image](https://github.com/BokDoong/today-eat-backend/assets/102129660/1ebd413b-4cc5-4827-b41a-73d8d700cc99)
+![한이음](https://github.com/BokDoong/english-fairytale-backend/assets/102129660/32d4d986-be0b-4814-94f8-9847a78262f9)
 
-### 📅 스케쥴러
-<img width="700" height="500" alt="스크린샷 2023-12-05 오후 11 19 09" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/f601d04b-8f05-4e83-b832-8e317632f06b">
+### 🤝 [Notion 팀 협업페이지를 통한 대회 문서 및 프로젝트 운영 관리](https://rigorous-lentil-508.notion.site/b6c6e4104de24b1583214612894b2653?pvs=4)
+<img width="1297" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/8d21bfc6-1104-44cb-9ae4-e1c44b6133d2">
 
-### 🤙 Work-In-Process
-<img width="700" height="500" alt="image" src="https://github.com/BokDoong/today-eat-backend/assets/102129660/6defab3f-b6a8-4274-a78e-2045524d1ec7">
+### ✅ [API 명세서(Notion) 및 에러코드 문서화](https://rigorous-lentil-508.notion.site/API-8d1782af488147659333ae8d80113ce5?pvs=4)
+<img width="1235" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/70d8f2a5-04b7-488d-8bf1-f8050d47fa63">
+
 
 <br/><br/>
 ## Acheivement
