@@ -1,4 +1,4 @@
-# I Luv Book - GPT를 활용한 영어동화 창작 서비스
+# GPT를 활용한 영어동화 창작 서비스 - 2023 한이음 ICT 멘토링 프로젝트
 <img width="1000" alt="image" src="https://github.com/BokDoong/english-fairytale-backend/assets/102129660/e8c1a113-742d-4d84-ab1e-2b70653db5d7">
 
 
